@@ -34,6 +34,9 @@ INSTALLED_APPS = [
 
     'commit',
     'rest_framework',
+    'task',
+    'comment',
+    'label',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
