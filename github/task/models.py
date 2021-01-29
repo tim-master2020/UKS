@@ -1,6 +1,8 @@
 from django.db import models
 from enum import Enum
 from label.models import Label
+from user.models import UserModel
+from milestone.models import Milestone
 
 class TaskStatus(Enum):
     TO_DO = "TO_DO"
@@ -30,7 +32,10 @@ class Task(models.Model):
     taskState = models.CharField(max_length=50,choices = [(tag, tag.value) for tag in TaskState],default="OPENED")
     taskPriorty = models.CharField(max_length=50,choices = [(tag, tag.value) for tag in TaskPriorty],default="LOW")
     taskType = models.CharField(max_length=50,choices = [(tag, tag.value) for tag in TaskType],default="FEATURE")
-    label = models.ManyToManyField(Label)
+    labels = models.ManyToManyField(Label)
+    author = models.ForeignKey(to=UserModel, on_delete=models.CASCADE, related_name='author')
+    asignees = models.ManyToManyField(to=UserModel, blank=True)
+    milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE,primary_key=True)
 
 
 
