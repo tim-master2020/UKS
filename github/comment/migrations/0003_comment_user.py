@@ -9,14 +9,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('task', '0001_initial'),
-        ('comment', '0001_initial'),
+        ('comment', '0002_comment_task'),
+        ('user', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='comment',
-            name='task',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='task.task'),
+            name='user',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.usermodel', verbose_name='author'),
         ),
     ]
