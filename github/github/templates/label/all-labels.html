@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% block content %} 
+  <h1 class="text-center mb-3">Labels</h1>
+  {% if all_labels %}
+    {% for label in all_labels %}
+      <div class="card mb-3" style="background-color: {{label.color}}">
+        <div class="card-body">
+          <p class="lead">{{ label }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No labels available</p>
+  {% endif %}
+{% endblock %}
