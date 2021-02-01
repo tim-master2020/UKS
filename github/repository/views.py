@@ -15,3 +15,19 @@ def allRepositories(request):
     branchCount = Branch.objects.all()
     context = {'allRepositories': allRepositories, 'branchCount' : branchCount}
     return render(request, "repository/allRepositories.html", context)
+
+def addRepository(request):
+    if request.method == 'POST':
+        form = RepositoryForm(request.POST)
+        if form.is_valid():
+            print('Form is valid!')
+            form.save()
+            messages.success(request, 'You successfully created a new repository')
+            return redirect('/repository')
+        else:
+            print('Form is not valid!')
+
+    else:
+        form = RepositoryForm()
+
+    return render(request, 'repository/addRepository.html', {'form': form})
