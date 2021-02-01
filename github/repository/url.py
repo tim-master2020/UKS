@@ -8,4 +8,5 @@ urlpatterns = [
     path('add', views.addRepository, name='addRepository'),
     path('<id>/delete', views.delete_view, name='deleteRepository'),
     path('<id>/update', views.update_view, name='updateRepository'),
+    path('<id>/detailRepository', views.detail_view, name='detailRepository')
 ]
