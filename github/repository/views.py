@@ -49,3 +49,26 @@ def delete_view(request, id):
         return HttpResponseRedirect("/repository") 
   
     return HttpResponseRedirect("/repository")
+
+# update view for details 
+def update_view(request, id): 
+    # dictionary for initial data with  
+    # field names as keys 
+    context ={} 
+  
+    # fetch the object related to passed id 
+    obj = get_object_or_404(Repository, id = id) 
+  
+    # pass the object as instance in form 
+    form = RepositoryForm(request.POST or None, instance = obj) 
+  
+    # save the data from the form and 
+    # redirect to detail_view 
+    if form.is_valid(): 
+        form.save() 
+        return HttpResponseRedirect("/repository") 
+  
+    # add form dictionary to context 
+    context["form"] = form 
+  
+    return render(request, "allRepositories.html", context)
