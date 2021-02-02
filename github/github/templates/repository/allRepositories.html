@@ -1,0 +1,29 @@
+{% extends 'base.html' %} 
+{% block content %} 
+  <h1 class="text-center mb-3">Repositories</h1>
+  <form action="http://localhost:8000/repository/add" method="POST">
+    {% csrf_token %}
+    <input class="btn btn-default btn-primary" style="color:black;text-align:centar;background-Color:white" type="submit" value="Add new repository"/>
+  </form>
+  <br/>
+  {% if allRepositories %}
+    {% for repo in allRepositories %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="lead"><b>{{ repo.name }}</b> | {{ repo.creationDate }}</p>
+                {% if branchCount %}
+                    {{ branchCount|length }}
+                {% endif %}
+                <form action="http://localhost:8000/repository/{{repo.id}}/delete" method="POST">
+                  {% csrf_token %}
+                  <input class="btn btn-default btn-danger" name="delete" style="color:red;text-align:centar;background-Color:white" type="submit" value="Delete"/>
+                </form>
+                <a style="color:green;margin-left:1%;margin-bottom:-5%;background-Color:white" href="http://localhost:8000/repository/{{repo.id}}/detailRepository">Update</a>
+            </div>
+        </div>
+    {% endfor %}
+  {% else %}
+    No repositories.
+  {% endif %}
+
+{% endblock %}
