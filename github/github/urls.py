@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import include, path
 from repository.models import Repository
 from . import views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.landing),
+    path('',views.landing, name='landing'),
     path('repository/', include('repository.url')),
-    path('register/', views.register)
+    path('register/', views.register, name="register"),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
