@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.landing),
     path('repository/', include('repository.url')),
+    path('register/', views.register)
 ]

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class='block' style="display: table; margin-right: auto; margin-left: auto; margin-top: 100px; border-style: groove; padding: 30px;">
+    <div class = 'col-lg-8 m-auto'>
+        <h1>Register</h1>
+        <h4>Just fill out the form.</h4>
+        <form  method="POST">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            <div class="form-group">
+                <button style="background-color: rgb(33, 74, 121); color:white;" type="submit">Sign up</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
