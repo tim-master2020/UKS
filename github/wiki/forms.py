@@ -6,6 +6,4 @@ class WikiForm(forms.ModelForm):
     class Meta: 
         model = Wiki 
    
-        fields = [ 
-            "content"
-        ] 
+        fields = '__all__'
