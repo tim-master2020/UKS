@@ -2,7 +2,7 @@ from django.shortcuts import (get_object_or_404,
                               render,  
                               HttpResponseRedirect,
                               redirect) 
-from .models import Repository
+from .models import Repository, Wiki
 from  branch.models import Branch
 from django.contrib import messages
 from .forms import RepositoryForm
@@ -21,7 +21,11 @@ def addRepository(request):
         form = RepositoryForm(request.POST)
         if form.is_valid():
             print('Form is valid!')
-            form.save()
+            repo = form.save(commit=False)
+            wiki = Wiki(content="")
+            wiki.save()
+            repo.wiki = wiki
+            repo.save()
             messages.success(request, 'You successfully created a new repository')
             return redirect('/repository')
         else:
@@ -51,8 +55,8 @@ def update_view(request, id):
     obj = get_object_or_404(Repository, id = id) 
 
     form = RepositoryForm(request.POST or None, instance = obj) 
-  
-    if form.is_valid(): 
+    
+    if form.is_valid():
         form.save() 
         return HttpResponseRedirect("/repository") 
   

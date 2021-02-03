@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from repository.models import Repository
+from wiki.models import Wiki
 from . import views
 from django.views.generic import TemplateView
 
@@ -24,5 +25,6 @@ urlpatterns = [
     path('',views.landing, name='landing'),
     path('repository/', include('repository.url')),
     path('register/', views.register, name="register"),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('wiki/', include('wiki.url'))
 ]

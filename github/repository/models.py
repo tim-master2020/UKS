@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Repository(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     creationDate = models.DateTimeField(auto_now_add=True)
     wiki = models.OneToOneField(Wiki, on_delete=models.CASCADE)
 
