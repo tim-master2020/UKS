@@ -1,20 +1,30 @@
-{% extends 'base.html' %} 
-{% block content %} 
-  <h1 class="text-center mb-3">Update this repository</h1>
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center mb-3">
 
-  <form method="post" action="http://localhost:8000/repository/{{repoData.id}}/update">
-    <div class="modal-body">
-        {% csrf_token %}
-        <div>
-            <label for="name">Name</label>
-            {% if repoData %}
-            <input type="text" class="form-control" id="name" name="name" value="{{repoData.name}}" required>
-            {% endif %}
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" style="color:black;text-align:centar;background-Color:white">Update</button>
-    </div>
-  </form>
+  <a href="{% url 'repository:allRepositories' %}" style="cursor:pointer;">
+  {% load static %}
+  <img src="{% static 'media/arrow.png' %}" alt="My image" class="image">
+  </a>
+  Update this repository
 
+</h1>
+<form method="post" action="http://localhost:8000/repository/{{repoData.id}}/update">
+  <div class="modal-body">
+    {% csrf_token %}
+    <div>
+      <label for="name">Name</label>
+      {% if repoData %}
+      <input type="text" class="form-control" id="name" name="name" value="{{repoData.name}}" required>
+      {% endif %}
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary"
+      style="color:black;text-align:centar;background-Color:white">Update</button>
+  </div>
+</form>
+<div style="padding-top:10px;padding-bottom: 10px;">
+  {% include 'label/all-labels.html' with id=repoData.id %}
+</div>
 {% endblock %}

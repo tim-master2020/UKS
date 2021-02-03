@@ -1,0 +1,15 @@
+{% if labels %}
+{% for label in labels %}
+<div class="card mb-3" style="background-color:{{label.color}};min-width:100px">
+    <div class="card-body">
+        <p class="lead">{{ label }}</p>  
+        <div style="display: flex;flex-direction: row;">            
+            {% include 'label/update-label.html' with id=id label=label %}   
+            {% include 'label/delete-label.html' with id=id label=label %}  
+        </div>       
+    </div>
+</div>
+{% endfor %}
+{% else %}
+    <p style="margin-top:30px">This repository currently has no labels</p>
+{% endif %}
