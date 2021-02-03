@@ -65,5 +65,5 @@ def detail_view(request, id):
     context ={} 
 
     context["repoData"] = Repository.objects.get(id = id) 
-    context["labels"] = Label.  objects.filter(repo_id = id)     
+    context["labels"] = Label.objects.filter(repo_id = id).order_by('-name')   
     return render(request, "repository/detailRepository.html", context)
