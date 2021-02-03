@@ -26,13 +26,16 @@ def addRepository(request):
             repo = form.save(commit=False)
 
             wiki = Wiki(content="")
-            wiki.save();
+            wiki.save()
 
-            repo.wiki = wiki;
+            repo.wiki = wiki
 
             currentUser = User.objects.get(id = request.user.id)
-            repo.user = currentUser; 
-            repo.save();
+            repo.user = currentUser
+            repo.save()
+
+            branch = Branch(name="master", repository_id=repo.id)
+            branch.save()
 
             messages.success(request, 'You successfully created a new repository')
             return redirect('/repository')
