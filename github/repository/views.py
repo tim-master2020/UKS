@@ -3,6 +3,7 @@ from django.shortcuts import (get_object_or_404,
                               HttpResponseRedirect,
                               redirect) 
 from .models import Repository
+from label.models import Label
 from  branch.models import Branch
 from django.contrib import messages
 from .forms import RepositoryForm
@@ -64,5 +65,5 @@ def detail_view(request, id):
     context ={} 
 
     context["repoData"] = Repository.objects.get(id = id) 
-           
+    context["labels"] = Label.  objects.filter(repo_id = id)     
     return render(request, "repository/detailRepository.html", context)
