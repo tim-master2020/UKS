@@ -2,13 +2,12 @@ from django.shortcuts import (get_object_or_404,
                               render,  
                               HttpResponseRedirect,
                               redirect) 
-from .models import Repository
+from .models import Repository, Wiki
 from label.models import Label
 from  branch.models import Branch
 from django.contrib import messages
 from .forms import RepositoryForm
 from .forms import RepositoryForm
-from wiki.models import Wiki
 from django.contrib.auth.models import User
 
 
@@ -67,8 +66,8 @@ def update_view(request, id):
     obj = get_object_or_404(Repository, id = id) 
 
     form = RepositoryForm(request.POST or None, instance = obj) 
-  
-    if form.is_valid(): 
+    
+    if form.is_valid():
         form.save() 
         return HttpResponseRedirect("/repository") 
   
