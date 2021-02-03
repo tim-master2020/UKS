@@ -20,3 +20,25 @@ def all(request):
     labels = Label.objects.all
     context = {'all_labels': labels}
     return render(request, 'label/all-labels.html',context)
+
+def addLabel(request,id):
+    context = {}
+
+    if request.method == 'POST':
+        form = LabelForm(request.POST)
+        print('form',form)
+        if form.is_valid():
+            print('Form is valid!')
+            label = form.save(commit=False)
+            label.repo = Repository.objects.get(pk = id)
+            label.save()
+            return redirect(reverse("repository:detailRepository",args=(id)))
+        else:
+            print('Form is not valid!')
+
+    if request.method == 'GET':
+        form = LabelForm()
+    
+    context["form"] = form 
+    
+    return render(request, 'label/add-label.html',{'form':form,'id':id})
