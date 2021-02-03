@@ -5,4 +5,4 @@ app_name='labels'
 
 urlpatterns = [
     path('all',views.all,name="all"),
-]
+]    path('add/<id>',views.addLabel,name="addLabel"),
