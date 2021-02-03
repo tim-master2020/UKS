@@ -14,8 +14,6 @@ from repository.models import Repository
 from repository.views import detail_view
 from django.core.exceptions import ValidationError
 
-# Create your views here.
-
 def all(request):
     labels = Label.objects.all
     context = {'all_labels': labels}
@@ -23,7 +21,6 @@ def all(request):
 
 def addLabel(request,id):
     context = {}
-
     if request.method == 'POST':
         form = LabelForm(request.POST)
         print('form',form)
@@ -39,9 +36,9 @@ def addLabel(request,id):
     if request.method == 'GET':
         form = LabelForm()
     
-    context["form"] = form 
-    
+    context["form"] = form     
     return render(request, 'label/add-label.html',{'form':form,'id':id})
+
 def updateLabel(request,id,label_id):
     context ={}
     obj = get_object_or_404(Label, id = label_id) 
