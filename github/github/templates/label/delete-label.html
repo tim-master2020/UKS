@@ -1,0 +1,32 @@
+<div style="margin-left:10px">
+    <button type="submit" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#delete{{label.name}}{{label.id}}">
+        {% load static %}
+        <img src="{% static 'media/trash-bin.png' %}" alt="My image" class="image">
+    </button>
+    <!-- Modal -->
+
+    
+<div class="modal fade" id="delete{{label.name}}{{label.id}}" tabindex="-1" role="dialog" aria-labelledby="#modal-{{label.name}}">
+    <form method="post" action="{% url 'labels:deleteLabel' id label.id %}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title" id="myModalLabel">Delete {{label}}</h4>
+                </div>
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div>
+                        Are you sure you want to delete this label?
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-light">Yes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
