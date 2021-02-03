@@ -35,7 +35,7 @@ class Task(models.Model):
     labels = models.ManyToManyField(Label)
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='author')
     asignees = models.ManyToManyField(to=User, blank=True)
-    milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE,primary_key=True)
+    milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE)
 
 
 
