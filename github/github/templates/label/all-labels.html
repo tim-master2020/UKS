@@ -1,15 +1,12 @@
-{% extends 'base.html' %} 
-{% block content %} 
-  <h1 class="text-center mb-3">Labels</h1>
-  {% if all_labels %}
-    {% for label in all_labels %}
-      <div class="card mb-3" style="background-color: {{label.color}}">
-        <div class="card-body">
-          <p class="lead">{{ label }}</p>
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p>No labels available</p>
-  {% endif %}
-{% endblock %}
+<div>
+  <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#myModal" >
+    {% load static %}
+    <img src="{% static 'media/plus.png' %}" alt="My image" class="image">
+    Add label
+</button>
+{% include 'label/add-label.html' with id=id %}
+</div>
+
+<div style="margin-top:10px;display: flex;flex-direction: column;max-width: 300px;">
+  {% include 'label/render-labels.html' with labels=labels id=id %}
+</div>
