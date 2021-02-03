@@ -42,3 +42,13 @@ def addLabel(request,id):
     context["form"] = form 
     
     return render(request, 'label/add-label.html',{'form':form,'id':id})
+def updateLabel(request,id,label_id):
+    context ={}
+    obj = get_object_or_404(Label, id = label_id) 
+    form = LabelForm(request.POST or None, instance = obj) 
+    if form.is_valid(): 
+        form.save() 
+        return redirect(reverse("repository:detailRepository",args=(id)))
+    else:
+        return redirect(reverse("repository:detailRepository",args=(id)))
+
