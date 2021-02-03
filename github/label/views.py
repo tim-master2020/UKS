@@ -52,3 +52,11 @@ def updateLabel(request,id,label_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+def deleteLabel(request, id,label_id): 
+    context ={} 
+    obj = get_object_or_404(Label, id = label_id)   
+
+    if request.method =="POST": 
+        obj.delete()
+  
+    return redirect(reverse("repository:detailRepository",args=(id)))
