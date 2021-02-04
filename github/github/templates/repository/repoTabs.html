@@ -1,0 +1,29 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-task-tab" data-toggle="tab" href="#nav-task" role="tab" aria-controls="nav-home" aria-selected="true">Tasks</a>
+      <a class="nav-item nav-link" id="nav-projects-tab" data-toggle="tab" href="#nav-projects" role="tab" aria-controls="nav-projects" aria-selected="false">Projects</a>
+      <a class="nav-item nav-link" id="nav-wiki-tab" data-toggle="tab" href="#nav-wiki" role="tab" aria-controls="nav-wiki" aria-selected="false">Wiki</a>
+      <a class="nav-item nav-link" id="nav-label-tab" data-toggle="tab" href="#nav-label" role="tab" aria-controls="nav-label" aria-selected="false">Labels</a>
+
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">...</div>
+  <div class="tab-pane fade" id="nav-projects" role="tabpanel" aria-labelledby="nav-projects-tab">...</div>
+  <div class="tab-pane fade" id="nav-wiki" role="tabpanel" aria-labelledby="nav-wiki-tab">
+    <div>
+        {% if repoData.wiki.content %}
+          <label>Wiki:</label>
+          <br/>
+          <label>{{ repoData.wiki.content }}</label>
+        {% else %}
+          <label>Wiki has no content.</label>
+        {% endif %}
+      </div>
+      <a style="color:#171717;margin-right:74%;background-Color:#b6e6ff;padding:0.3% 0.7%;" href="http://localhost:8000/wiki/{{repoData.wiki_id}}">Change Wiki</a>    
+
+  </div>
+  <div class="tab-pane fade" id="nav-label" role="tabpanel" aria-labelledby="nav-label-tab">
+    {% include 'label/all-labels.html' with id=repoData.id %}
+  </div>
+</div>
