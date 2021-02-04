@@ -3,6 +3,7 @@ from django.shortcuts import (get_object_or_404,
                               HttpResponseRedirect,
                               redirect) 
 from .models import Repository, Wiki
+from project.models import Project
 from label.models import Label
 from  branch.models import Branch
 from django.contrib import messages
@@ -79,5 +80,6 @@ def detail_view(request, id):
     context ={} 
 
     context["repoData"] = Repository.objects.get(id = id) 
-    context["labels"] = Label.objects.filter(repo_id = id).order_by('-name')   
+    context["labels"] = Label.objects.filter(repo_id = id).order_by('-name')  
+    context["allProjects"] = Project.objects.filter(repository_id = id).order_by('-name') 
     return render(request, "repository/detailRepository.html", context)
