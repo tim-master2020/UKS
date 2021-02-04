@@ -35,7 +35,7 @@ class Task(models.Model):
     taskPriorty = models.CharField(max_length=50,choices = [(tag, tag.value) for tag in TaskPriorty],default="LOW")
     taskType = models.CharField(max_length=50,choices = [(tag, tag.value) for tag in TaskType],default="FEATURE")
     labels = models.ManyToManyField(Label)
-    author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(to=User, on_delete=models.DO_NOTHING, related_name='author')
     asignees = models.ManyToManyField(to=User, blank=True)
     milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE)
     repo = models.ForeignKey(to=Repository,on_delete=models.CASCADE,related_name='repo')
