@@ -4,6 +4,7 @@ from enum import Enum
 from label.models import Label
 from milestone.models import Milestone
 from project.models import Project
+from repository.models import Repository
 
 class TaskStatus(Enum):
     TO_DO = "TO_DO"
@@ -37,7 +38,7 @@ class Task(models.Model):
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='author')
     asignees = models.ManyToManyField(to=User, blank=True)
     milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE)
-
+    repo = models.ForeignKey(to=Repository,on_delete=models.CASCADE,related_name='repo')
     project = models.ManyToManyField(to=Project,null=True)
 
 
