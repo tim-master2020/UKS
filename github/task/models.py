@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from enum import Enum
 from label.models import Label
 from milestone.models import Milestone
+from project.models import Project
 
 class TaskStatus(Enum):
     TO_DO = "TO_DO"
@@ -37,6 +38,7 @@ class Task(models.Model):
     asignees = models.ManyToManyField(to=User, blank=True)
     milestone = models.OneToOneField(Milestone,on_delete=models.CASCADE)
 
+    project = models.ManyToManyField(to=Project,null=True)
 
 
 
