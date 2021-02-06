@@ -33,9 +33,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'commit',
     'rest_framework',
+    'label',
     'task',
     'comment',
-    'label',
     'milestone',
     'project',
     'wiki',
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'repository',
-    'branch'
+    'branch',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,4 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'landing'
 LOGOUT_REDIRECT_URL = 'landing'
 SESSION_COOKIE_AGE = 1209600
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
