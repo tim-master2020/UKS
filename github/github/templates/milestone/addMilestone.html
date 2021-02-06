@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="name">Title</label>
+                        <label for="title">Title</label>
                         <input type="text" class="form-control" id="title"  name="title" required placeholder="Enter milestone name">
                     </div>
                     <div class="form-group">
@@ -19,7 +19,7 @@
                         <input type="text" class="form-control" id="description"  name="description" required placeholder="Enter milestone description">
                     </div>
                     <div class="form-group">
-                        <label for="description">Due date</label>
+                        <label for="dueDate">Due date</label>
                         <input type="date" class="form-control" id="dueDate"  name="dueDate" required>
                     </div>
                 </div>
