@@ -18,23 +18,12 @@
             {% endif %}
         </div>
         <br/>
-        <div>
-          {% if repoData.wiki.content %}
-            <label>Wiki:</label>
-            <br/>
-            <label>{{ repoData.wiki.content }}</label>
-          {% else %}
-            <label>Wiki has no content.</label>
-          {% endif %}
-        </div>
     </div>
     <div class="modal-footer">
-        <a style="color:#171717;margin-right:74%;background-Color:#b6e6ff;padding:0.3% 0.7%;" href="http://localhost:8000/wiki/{{repoData.wiki_id}}">Change Wiki</a>    
         <button type="submit" class="btn btn-primary" style="color:black;text-align:centar;background-Color:white">Update</button>
       </div>
   </form>
 
-<div style="padding-top:10px;padding-bottom: 10px;">
-  {% include 'label/all-labels.html' with id=repoData.id %}
-</div>
+  {% include 'repository/repoTabs.html' with repoData=repoData tasks=tasks %}
+
 {% endblock %}
