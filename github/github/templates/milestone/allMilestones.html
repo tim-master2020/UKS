@@ -1,0 +1,29 @@
+{% block content %} 
+  <h1 class="text-center mb-3">Milestones</h1>
+  <button type="button" class="btn btn-outline-secondary" style="color:black" data-toggle="modal" data-target="#newMilestoneModal">
+    New milestone
+  </button>
+  {% include 'milestone/addMilestone.html' with id=id %}
+  <br/>
+  <br/>
+  {% if milestones %}
+    {% for milestone in milestones %}
+        <div class="card mb-3" >
+            <div class="card-body">
+              <div style="display: flex;flex-direction: row; float:right; top:0;">
+                {% include 'milestone/updateMilestone.html' with id=id %}
+                <div style="width:5px;"></div>
+                {% include 'milestone/deleteMilestone.html' with id=id %}
+              </div>
+                <p class="lead"><b>{{ milestone.title }}</b></p>
+                <p>Due date: {{ milestone.dueDate }}</p>
+                <p>Description:</p>
+                <p class="lead">{{ milestone.description }}</p>
+            </div>
+        </div>
+    {% endfor %}
+  {% else %}
+    No milestones.
+  {% endif %}
+
+{% endblock %}
