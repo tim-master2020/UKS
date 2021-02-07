@@ -2,6 +2,8 @@ from django import forms
 from task.models import Task
 from crispy_forms.helper import FormHelper 
 from label.models import Label
+from project.models import Project
+from milestone.models import Milestone
  
 class TaskForm(forms.ModelForm):
 
@@ -16,6 +18,8 @@ class TaskForm(forms.ModelForm):
         if 'repo_id' in kwargs:
             repo_id = kwargs.pop('repo_id')
             self.fields['labels'].queryset = Label.objects.filter(repo_id = repo_id)
+            self.fields['project'].queryset = Project.objects.filter(repo_id = repo_id)
+            self.fields['milestone'].queryset = Milestone.objects.filter(repo_id = repo_id)
 
     class Meta: 
         model = Task
@@ -39,6 +43,7 @@ class TaskForm(forms.ModelForm):
             'project': forms. SelectMultiple(attrs={'required': False}),
             "title" : forms.TextInput(attrs={'required': True}),
             'labels': forms.SelectMultiple(attrs={'required': False}),
+            'milestone': forms.SelectMultiple(attrs={'required': False})
         }
 
 
