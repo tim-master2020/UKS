@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div style="display: flex;flex-direction: column;">
+<div>
+  <a href="{% url 'repository:detailRepository' repo_id %}">Return</a>
+  {% if not is_adding%}
+    <a>
+      <a style="margin-left: 10px;cursor: pointer;color: rgb(0, 111, 238);" data-toggle="modal" data-target="#deleteTask{{task_id}}">
+        Delete
+      </a>
+    </a>
+    {% include 'task/delete-task.html' with task_id=task_id %}
+  {% endif %}
+</div>
+
+<div class="card" style="width: auto;margin-left: 0px;margin-top: 15px;">
+  <form method="POST" style="width: 500px;margin-left: 100px;">
+      {% csrf_token %}
+      {{ form|crispy }}
+      {% if is_adding %}
+        <button class="btn btn-outline-primary" type="submit">Create</button>
+      {% else %}
+        <button class="btn btn-outline-primary" type="submit">Update</button>
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}
+</div>
