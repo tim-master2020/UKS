@@ -15,6 +15,14 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name"  name="name" required placeholder="Enter repository name">
                     </div>
+                    <div class="form-group">
+                        <select name="user" id="users" multiple>
+                            <option selected>Choose members</option>
+                            {% for u in allUsers%}
+                                <option value="{{u}}">{{u}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
