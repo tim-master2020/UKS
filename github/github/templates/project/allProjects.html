@@ -1,0 +1,23 @@
+{% block content %} 
+  <h1 class="text-center mb-3">Projects</h1>
+  <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#newProjectModal">
+    New project
+  </button>
+  {% include 'project/addProject.html' with id=id %}
+  <br/>
+  {% if allProjects %}
+    {% for project in allProjects %}
+        <div class="card mb-3" >
+            <div class="card-body">
+                <p class="lead"><b>{{ project.name }}</b></p>
+                <br/>
+                {% include 'project/updateProject.html' with id=id project=project %}
+                {% include 'project/deleteProject.html' with id=id project=project %}
+            </div>
+        </div>
+    {% endfor %}
+  {% else %}
+    No projects.
+  {% endif %}
+
+{% endblock %}
