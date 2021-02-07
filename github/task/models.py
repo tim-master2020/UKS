@@ -37,7 +37,7 @@ class Task(models.Model):
     labels = models.ManyToManyField(Label)
     author = models.ForeignKey(to=User, on_delete=models.DO_NOTHING, related_name='author')
     asignees = models.ManyToManyField(to=User, blank=True)
-    milestone = models.ForeignKey(to=Milestone,on_delete=models.CASCADE,related_name='milestone')
+    milestone = models.ManyToManyField(to=Milestone,blank=True)
     repo = models.ForeignKey(to=Repository,on_delete=models.CASCADE,related_name='repo')
     project = models.ManyToManyField(to=Project,null=True)
 
