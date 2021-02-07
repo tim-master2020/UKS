@@ -27,5 +27,6 @@ urlpatterns = [
     path('repository/', include('repository.url')),
     path('register/', views.register, name="register"),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('wiki/', include('wiki.url'))
+    path('wiki/', include('wiki.url')),
+    path('task/',include('task.urls'))
 ]
