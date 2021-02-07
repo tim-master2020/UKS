@@ -21,7 +21,7 @@ def detailView(request, id):
         form = TaskForm({'title':task.title,'description':task.description,'taskStatus':task.taskStatus,'taskState':task.taskState,'taskPriorty':task.taskPriorty,'taskType':task.taskType,
         'labels':[label for label in task.labels.values_list('id', flat=True)],
         'asignees':[user for user in task.asignees.values_list('id', flat=True)],
-        'milestone':task.milestone,
+        'milestone':[milestone for milestone in task.milestone.values_list('id', flat=True)],
         'project':[project for project in task.project.values_list('id', flat=True)],
         'repo_id':repo_id})
 
