@@ -1,0 +1,28 @@
+{% if tasks %}
+{% for task in tasks %}
+<a href="{% url 'task:detailView' task.id %}">
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>{{ task.title }} by {{task.author}}</h5>
+        <br/>
+        {%if task.asignees.all%} 
+        <div class="card">
+            <div class="card-body">
+                <label>Assingees:</label>
+                <br>
+                <ul>
+                {% for a in task.asignees.all %}
+                <li>{{a}}</li>  
+                {% endfor%}
+            </ul>
+            </div>
+          </div>
+        {% endif %}
+
+    </div>
+</div>
+</a>
+{% endfor %}
+{% else %}
+    <p style="margin-top:30px">This repository currently has no tasks</p>
+{% endif %}
