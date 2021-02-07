@@ -57,5 +57,11 @@ def newTask(request,repo_id):
         else:
             print('Form is not valid!')
     
+def deleteTask(request,id):
+    context ={} 
+    obj = get_object_or_404(Task, id = id)
+    repo = Repository.objects.get(name = obj.repo)  
+    if request.method =="POST": 
+        obj.delete() 
+    return redirect(reverse("repository:detailRepository",args=[repo.id]))
 
-# Create your views here.
