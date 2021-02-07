@@ -14,10 +14,13 @@ from django.contrib.auth.models import User
 
 
 def allRepositories(request):
-    allRepositories = Repository.objects.filter(user_id=request.user.id)
+    allRepositories = Repository.objects.filter(users=request.user.id)
     #treba pristupiti brancount polju iz svakog repozitorijuma i staviti mu vrednost iz baze i takve objekte sacuvati u allRepositories
     branchCount = Branch.objects.all()
-    context = {'allRepositories': allRepositories, 'branchCount' : branchCount}
+
+    allUsers = User.objects.exclude(username=request.user)
+    print(allUsers)
+    context = {'allRepositories': allRepositories, 'branchCount' : branchCount, 'allUsers': allUsers}
     return render(request, "repository/allRepositories.html", context)
 
 def addRepository(request):
@@ -32,10 +35,16 @@ def addRepository(request):
 
             repo.wiki = wiki
 
-            currentUser = User.objects.get(id = request.user.id)
-            repo.user = currentUser
             repo.save()
 
+            currentUser = User.objects.get(id = request.user.id)
+            repo.users.add(currentUser)
+
+            selectedUsers = request.POST.getlist('user', None)
+            for item in selectedUsers:
+                member = User.objects.get(username=item)
+                repo.users.add(member)
+            
             branch = Branch(name="master", repository_id=repo.id)
             branch.save()
 
@@ -43,6 +52,7 @@ def addRepository(request):
             return redirect('/repository')
         else:
             print('Form is not valid!')
+            print(form)
 
     else:
         form = RepositoryForm()
