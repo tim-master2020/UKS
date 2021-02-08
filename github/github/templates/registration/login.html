@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class='row' style="display: table; margin-right: auto; margin-left: auto; margin-top: 100px; border-style: groove; padding: 30px;">
+{% load crispy_forms_tags %}
+<div class='row' style="display: table; margin-right: auto; margin-left: auto; margin-top: 100px; border-style: groove; padding: 80px;">
     <div class='col-lg-8 m-auto'>
         <h2>Log In</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button style="background-color: rgb(33, 74, 121); color:white; margin-bottom: 10px;" type="submit">Log In</button>
+            {{ form|crispy }}
+            <button class="btn btn-primary" style=" margin-top: 10px; margin-bottom: 10px;" type="submit">Log In</button>
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
