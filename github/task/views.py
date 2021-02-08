@@ -46,20 +46,24 @@ def detailView(request, id):
 
 def newTask(request,repo_id): 
     if request.method == 'GET': 
-        form = TaskForm({'repo_id':repo_id})
+        form = TaskForm(repo_id = repo_id)
         return render(request, "task/detail-task.html", {'form': form,'repo_id':repo_id,'is_adding':True})
 
     if request.method == 'POST':
+        print('request is',request)
         form = TaskForm(request.POST)
         if form.is_valid():
             print('Form is valid!')
             task = form.save(commit=False)
             task.repo = Repository.objects.get(pk = repo_id)
-            print('request user is',request.user)
             currentUser = User.objects.get(pk = request.user.id)
             task.author = currentUser
 
             task.save()
+            form.save_m2m()
+
+            print('currently creating this task',task.labels.all())
+            
             return redirect(reverse("repository:detailRepository",args=(repo_id)))
         else:
             print('Form is not valid!')
