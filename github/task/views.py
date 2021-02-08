@@ -14,23 +14,30 @@ from django.urls import reverse
 
 def detailView(request, id): 
     if request.method == 'GET':
+        print('in get')
         context ={} 
         task = Task.objects.get(pk = id);
         repo_id = task.repo_id
         asignees = task.asignees.all();
-        form = TaskForm({'title':task.title,'description':task.description,'taskStatus':task.taskStatus,'taskState':task.taskState,'taskPriorty':task.taskPriorty,'taskType':task.taskType,
+        form = TaskForm(
+        {'title':task.title,
+        'description':task.description,
+        'taskStatus':task.taskStatus,
+        'taskState':task.taskState,
+        'taskPriorty':task.taskPriorty,
+        'taskType':task.taskType,
         'labels':[label for label in task.labels.values_list('id', flat=True)],
         'asignees':[user for user in task.asignees.values_list('id', flat=True)],
         'milestone':[milestone for milestone in task.milestone.values_list('id', flat=True)],
-        'project':[project for project in task.project.values_list('id', flat=True)],
-        'repo_id':repo_id})
+        'project':[project for project in task.project.values_list('id', flat=True)]},
+        repo_id = repo_id,)
 
         return render(request, "task/detail-task.html", {'form': form,'repo_id':repo_id,'task_id':id})
         
     if request.method == 'POST':
-        obj = get_object_or_404(Task, id = id) 
-        form = TaskForm(request.POST or None, instance = obj)
-        print('labels',obj.labels.all()) 
+        obj = get_object_or_404(Task, id = id)
+        print('obj at update',obj) 
+        form = TaskForm(request.POST or None, instance = obj,repo_id=obj.repo_id)
         if form.is_valid(): 
             form.save()
             return redirect(reverse("repository:detailRepository",args=[obj.repo_id]))
