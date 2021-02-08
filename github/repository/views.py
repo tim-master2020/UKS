@@ -11,6 +11,7 @@ from django.contrib import messages
 from .forms import RepositoryForm
 from .forms import RepositoryForm
 from django.contrib.auth.models import User
+from task.models import Task
 
 
 def allRepositories(request):
@@ -92,6 +93,7 @@ def detail_view(request, id):
 
     context["repoData"] = Repository.objects.get(id = id) 
     context["labels"] = Label.objects.filter(repo_id = id).order_by('-name')  
+    context["tasks"] = Task.objects.filter(repo_id = id)
     context["allProjects"] = Project.objects.filter(repository_id = id).order_by('-name')
     context["milestones"] = Milestone.objects.filter(repository_id = id).order_by('title')  
     return render(request, "repository/detailRepository.html", context)

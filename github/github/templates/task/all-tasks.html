@@ -1,0 +1,10 @@
+<div>
+    <a href="{% url 'task:addTask' id %}"><button type="button" class="btn btn-outline-primary" style="color:black;margin-top: 25px;">
+      New task
+  </button>
+</a>
+  <div style="margin-top: 20px;">
+    {% include 'task/render-tasks.html' with tasks=tasks%}
+  </div>
+</div>
+  
