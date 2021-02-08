@@ -1,0 +1,18 @@
+{% block content %} 
+<div>
+    <h1 class="text-center mb-3">Wiki</h1>
+    <div>
+        <a style="color:#171717;float: right;margin-right:5%;background-Color:#b6e6ff;padding:0.3% 0.7%;font-size: large;"
+        href="http://localhost:8000/wiki/{{repoData.wiki_id}}">Change Wiki</a>
+
+        {% if repoData.wiki.content %}
+        <label>Content:</label>
+        <br />
+        <label>{{ repoData.wiki.content }}</label>
+        {% else %}
+        <label>Wiki has no content.</label>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
