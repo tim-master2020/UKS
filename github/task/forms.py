@@ -5,10 +5,17 @@ from crispy_forms.helper import FormHelper
 from label.models import Label
 from project.models import Project
 from milestone.models import Milestone
+from repository.models import Repository
  
-class TaskForm(forms.ModelForm):
+class TaskForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
+
+        repo_id = None
+
+        if 'repo_id' in kwargs:
+            repo_id = kwargs.pop('repo_id')
+
         super(TaskForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -16,8 +23,7 @@ class TaskForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_survey'
 
-        if 'repo_id' in kwargs:
-            repo_id = kwargs.pop('repo_id')
+        if repo_id is not None:
             self.fields['labels'].queryset = Label.objects.filter(repo_id = repo_id)
             self.fields['project'].queryset = Project.objects.filter(repository_id = repo_id)
             self.fields['milestone'].queryset = Milestone.objects.filter(repository_id = repo_id)
