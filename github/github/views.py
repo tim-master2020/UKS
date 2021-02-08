@@ -2,7 +2,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from user.models import UserForm
+from user.forms import UserForm
 from django.contrib.auth import authenticate
 from django.contrib import messages
 
