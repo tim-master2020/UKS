@@ -1,4 +1,5 @@
 from django import forms 
+from django.forms import ModelForm
 from task.models import Task
 from crispy_forms.helper import FormHelper 
 from label.models import Label
@@ -18,8 +19,9 @@ class TaskForm(forms.ModelForm):
         if 'repo_id' in kwargs:
             repo_id = kwargs.pop('repo_id')
             self.fields['labels'].queryset = Label.objects.filter(repo_id = repo_id)
-            self.fields['project'].queryset = Project.objects.filter(repo_id = repo_id)
-            self.fields['milestone'].queryset = Milestone.objects.filter(repo_id = repo_id)
+            self.fields['project'].queryset = Project.objects.filter(repository_id = repo_id)
+            self.fields['milestone'].queryset = Milestone.objects.filter(repository_id = repo_id)
+            self.fields['asignees'].queryset = Repository.objects.get(pk = repo_id).users.all()
 
     class Meta: 
         model = Task
