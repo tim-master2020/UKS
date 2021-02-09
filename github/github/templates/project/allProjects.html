@@ -15,6 +15,14 @@
                 <div style="width:5px;"></div>
                 {% include 'project/deleteProject.html' with id=id %}
               </div>
+              <div style="height:30px;"></div>
+              <form method="post">
+                {% csrf_token %}
+                <div style="position:absolute; bottom: 0; right: 0; padding: 20px;" >
+                  
+                  <a href="http://localhost:8000/project/{{project.id}}/detailProject">Details</a>
+                </div>
+              </form> 
                 <p class="lead"><b>{{ project.name }}</b></p>
                 <p>Description:</p>
                 <p class="lead">{{ project.description }}</p>
