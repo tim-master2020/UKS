@@ -10,3 +10,18 @@ class ProjectForm(forms.ModelForm):
             "name",
             "description"
         ]
+
+class DetailForm(forms.ModelForm):
+        
+    class Meta: 
+       
+   
+        fields = [ 
+            "name",
+            "description",
+            "tasks"
+        ]
+
+        widgets = {
+            'task': forms.SelectMultiple(attrs={'required': False})
+        } 

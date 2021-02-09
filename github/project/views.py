@@ -7,6 +7,9 @@ from .forms import ProjectForm
 from django.urls import reverse
 from  branch.models import Branch
 from django.contrib import messages
+from django.http import HttpResponse
+from task.models import Task
+from repository.models import Repository
 
 # Create your views here.
 
@@ -52,3 +55,31 @@ def delete_project(request, id, project_id):
         obj.delete()
   
     return redirect(reverse("repository:detailRepository",args=(id)))
+
+def add_tasks(request, project_id):
+
+    selectedTasks = request.POST.getlist("tasks")
+    
+    print(selectedTasks)
+    obj = get_object_or_404(Project, id = project_id)
+    repo = Repository.objects.get(id = obj.repository_id)  
+    
+    for item in selectedTasks:
+        task = Task.objects.get(id = item)
+        task.project.add(obj)
+        task.save()
+    return redirect(reverse("repository:detailRepository",args=[repo.id]))
+
+def project_detail(request, project_id): 
+    context ={} 
+    newTasks = []
+    tasks = Task.objects.all()
+    for task in tasks:
+        for project in task.project:
+            if project.id == project_id:
+                newTasks.add(task)
+        
+    context["newtasks"] = newTasks
+    return render(request, "project/detailProject.html", context)
+
+
