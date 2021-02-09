@@ -4,10 +4,17 @@
 
 
 <div class="card">
-   <form method="POST">   
+   <form method="POST" action="{% url 'project:addTasks' projectData.id %}">   
       {% csrf_token %}
+      <select class="form-select" size="3" multiple name="tasks" id="tasks" style="width: 160px;">
+         <option disabled selected style="font-weight: bold;">Select tasks</option>
+         {% for task in newtasks %}
+             <option value="{{task.id}}">{{task.title}}</option>
+         {% endfor %}
+      </select>
+      <div style="height:5px;"></div>
+      <button class="btn btn-outline-secondary" type="submit">Add tasks</button>
       
-      <button style="margin-top: 10px;" class="btn btn-outline-primary" >Update</button>
     </form>
 </div>
 {% endblock %}
