@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from task.models import Task
 from repository.models import Repository
+from milestone.models import Milestone
 
 # Create your views here.
 
@@ -67,20 +68,48 @@ def add_tasks(request, project_id):
         task.save()
     return redirect(reverse("project:detailProject",args=[obj.id]))
 
+def add_milestones(request, project_id):
+    selectedMs = request.POST.getlist("milestones")
+    obj = get_object_or_404(Project, id = project_id)
+    repo = Repository.objects.get(id = obj.repository_id)  
+    
+    for item in selectedMs:
+        milestone = Milestone.objects.get(id = item)
+        milestone.project.add(obj)
+        milestone.save()
+    return redirect(reverse("project:detailProject",args=[obj.id]))
+
 def project_detail(request, project_id): 
     context ={} 
+    
     newTasks = []
-    resTasks = []
-    tasks = Task.objects.all()
-    for task in Task.objects.all():
-        for project in task.project.all():
-            if str(project.id)==str(project_id):
-                newTasks.append(task)
-    for task in Task.objects.all():
-        if task not in newTasks:
-            resTasks.append(task)
-    context["newtasks"] = resTasks
-    context["projectData"] = Project.objects.get(id = project_id) 
+    existingTasks = []
+
+    obj = get_object_or_404(Project, id = project_id)
+    milestones = Milestone.objects.filter(repository_id = obj.repository_id)
+    
+    existingMs = []
+    newMs = []
+    for ms in milestones:
+        if obj in ms.project.all():
+            existingMs.append(ms)
+        else:
+            newMs.append(ms)
+    
+    context["existingMs"] = existingMs
+    context["newMs"] = newMs
+
+    tasks = Task.objects.filter(repo_id = obj.repository_id)
+    for task in tasks:
+        if obj in task.project.all():
+            existingTasks.append(task)
+        else:
+            newTasks.append(task)
+
+    context["newTasks"] = newTasks
+    context["existingTasks"] = existingTasks
+    context["projectData"] = Project.objects.get(id = project_id)
+
     return render(request, "project/detailProject.html", context)
 
 

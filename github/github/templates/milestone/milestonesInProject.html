@@ -1,0 +1,28 @@
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div>
+    <p class="lead" style="font-weight: 400; font-size: 23px;">Milestones:</p>
+    {% for ms in existingMs %}
+       <li >{{ms}}</li>
+    {% endfor %}
+ </div>
+ <br/>
+
+<div class="card">
+    <form method="POST" action="{% url 'project:addMilestones' projectData.id %}" style="padding: 22px 35px;">   
+      {% csrf_token %}
+      <p class="lead">Choose milestones for this project:</p>
+      <select class="form-select" size="3" multiple name="milestones" id="milestones" style="width: 160px;">
+         <option disabled selected style="font-weight: bold;">Select milestones</option>
+         {% for ms in newMs %}
+             <option value="{{ms.id}}">{{ms}}</option>
+         {% endfor %}
+      </select>
+      <div style="height:5px;"></div>
+      <button class="btn btn-outline-secondary" type="submit">Add milestones</button>
+    </form>
+</div>
+<br/>
+
+{% endblock %}

@@ -41,3 +41,6 @@ class Task(models.Model):
     repo = models.ForeignKey(to=Repository,on_delete=models.CASCADE,related_name='repo')
     project = models.ManyToManyField(to=Project,blank=True)
 
+    def __str__(self):
+        return self.title 
+

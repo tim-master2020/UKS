@@ -2,19 +2,15 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
+<h1 class="text-center mb-3">
+   <a href="{% url 'repository:detailRepository' projectData.repository_id %}" style="cursor:pointer;">
+      {% load static %}
+      <img src="{% static 'media/arrow.png' %}" alt="My image" class="image">
+    </a>
+   {{projectData.name}}</h1>
+<p class="lead">{{ projectData.description }}</p>
 
-<div class="card">
-   <form method="POST" action="{% url 'project:addTasks' projectData.id %}">   
-      {% csrf_token %}
-      <select class="form-select" size="3" multiple name="tasks" id="tasks" style="width: 160px;">
-         <option disabled selected style="font-weight: bold;">Select tasks</option>
-         {% for task in newtasks %}
-             <option value="{{task.id}}">{{task.title}}</option>
-         {% endfor %}
-      </select>
-      <div style="height:5px;"></div>
-      <button class="btn btn-outline-secondary" type="submit">Add tasks</button>
-      
-    </form>
-</div>
+{% include 'task/task-in-project.html' %}
+{% include 'milestone/milestonesInProject.html' %}
+
 {% endblock %}
