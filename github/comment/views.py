@@ -25,3 +25,10 @@ def addComment(request,task_id):
     else:
         return redirect(reverse("task:detailView",args=(task_id)))
 
+def deleteComment(request,id):
+    print('in delete comment view') 
+    comment = get_object_or_404(Comment, id = id)
+    task = Task.objects.get(pk = comment.task.id)  
+    if request.method =="POST": 
+        comment.delete() 
+    return redirect(reverse("task:detailView",args=[task.id]))
