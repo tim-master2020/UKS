@@ -1,0 +1,6 @@
+<form method="POST" action="{% url 'comment:deleteComment' comment_id %}">
+    {% csrf_token %}
+    <button " class=" btn btn-outline-danger" type="submit">
+        Delete
+    </button>
+</form>

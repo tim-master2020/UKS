@@ -16,15 +16,22 @@
 </div>
 
 <div class="card" style="width: auto;margin-left: 0px;margin-top: 15px;">
-  <form method="POST" style="width: 500px;margin-left: 100px;">
+  {% if  is_adding %}
+        <form method="POST" action="{% url 'task:addTask' repo_id %}" style="width: 500px;margin-left: 100px;">
+    {% else %}
+        <form method="POST"  action="{% url 'task:detailView' task_id %}" style="width: 500px;margin-left: 100px;">
+    {% endif %}
       {% csrf_token %}
       {{ form|crispy }}
       {% if is_adding %}
         <button class="btn btn-outline-primary" type="submit">Create</button>
       {% else %}
-        <button class="btn btn-outline-primary" type="submit">Update</button>
+        <button style="margin-top: 10px;" class="btn btn-outline-primary" type="submit">Update</button>
       {% endif %}
     </form>
   </div>
+  {% if not is_adding %}
+  {% include 'comments/render-comments.html' with  comments=comments%}
+  {% endif %}
 {% endblock %}
 </div>
