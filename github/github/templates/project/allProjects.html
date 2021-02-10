@@ -18,14 +18,15 @@
               <div style="height:30px;"></div>
               <form method="post">
                 {% csrf_token %}
-                <div style="position:absolute; bottom: 0; right: 0; padding: 20px;" >
-                  
-                  <a href="http://localhost:8000/project/{{project.id}}/detailProject">Details</a>
-                </div>
+
               </form> 
                 <p class="lead"><b>{{ project.name }}</b></p>
-                <p>Description:</p>
-                <p class="lead">{{ project.description }}</p>
+            </div>
+            <br/>
+            <br/>
+            <div style="position:absolute; bottom: 0; left: 10; padding: 20px; margin-top: 10px;" >
+              <a style="border: 1px solid rgb(231, 233, 238); border-radius: 5px; padding: 5px 8px; font-size: 20px; color: rgb(105, 116, 133); background-color: rgb(239, 241, 245);" 
+              href="http://localhost:8000/project/{{project.id}}/detailProject">Details</a>
             </div>
           </div>
     {% endfor %}
