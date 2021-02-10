@@ -32,3 +32,22 @@ def deleteComment(request,id):
     if request.method =="POST": 
         comment.delete() 
     return redirect(reverse("task:detailView",args=[task.id]))
+
+
+def editComment(request,id):
+
+    if request.method == "GET":
+        comment = get_object_or_404(Comment, id = id) 
+        form = CommentForm(instance = comment) 
+        return render(request,'comments/edit-comment.html',{'form':form,'id':comment.id,'task_id':comment.task.id})
+
+    if request.method == "POST":
+        print('in edit post')
+        obj = get_object_or_404(Comment, id = id)
+        form = CommentForm(request.POST or None, instance = obj)
+        if form.is_valid(): 
+            form.save()
+            return redirect(reverse("task:detailView",args=[obj.task.id]))
+        else:
+            print('not valid form when updating!',form.errors)
+
