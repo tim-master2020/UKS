@@ -1,0 +1,28 @@
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div>
+    <p class="lead" style="font-weight: 400; font-size: 23px;">Tasks:</p>
+    {% for task in existingTasks %}
+       <li >{{task}}</li>
+    {% endfor %}
+ </div>
+ <br/>
+
+ <div class="card">
+    <form method="POST" action="{% url 'project:addTasks' projectData.id %}" style="padding: 22px 35px;">   
+       {% csrf_token %}
+       <p class="lead">Choose tasks for this project:</p>
+       <select class="form-select" size="3" multiple name="tasks" id="tasks" style="width: 160px;">
+          <option disabled selected style="font-weight: bold;">Select tasks</option>
+          {% for task in newTasks %}
+              <option value="{{task.id}}">{{task.title}}</option>
+          {% endfor %}
+       </select>
+       <div style="height:5px;"></div>
+       <button class="btn btn-outline-secondary" type="submit">Add tasks</button>
+    </form>
+</div>
+<br/>
+
+{% endblock %}
