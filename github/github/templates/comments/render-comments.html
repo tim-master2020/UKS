@@ -1,0 +1,37 @@
+{% load crispy_forms_tags %}
+<div class="card mb-3" style="margin-top: 10px;">
+    <div class="card-body">
+        {% if comments %}
+        <h2>Comments</h2>
+        {% for comment in comments %}
+        <div class="card mb-3" style="width: 500px;margin-left: 150px;">
+            <div class="card-body">
+                <div style="display: flex;flex-direction: row;">
+                <div style="flex:1">
+                    <b>{{comment.user}}</b>
+                    <br/>
+                    {{comment.text}}
+                    <br/>
+                    <br/>
+                    {{comment.date}}
+                </div>
+                {% ifequal currentUser comment.user%}
+                    <div style="flex: 2;text-align: right;display: flex;flex-direction: row;">
+                        <div style="flex:1">
+                            {% include 'comments/delete-comment.html' with comment_id=comment.id %}
+                        </div>
+                        <button" style="flex:1;height:40px;margin-left: 5px;" class="btn btn-outline-primary" style="color:black">
+                           <a href="{% url 'comment:editComment' comment.id %}">Edit</a> 
+                        </button>
+                    </div>
+                {% endifequal  %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="margin-top:30px">This task currently has no comments</p>
+        {% endif %}
+        {% include 'comments/create-comment.html' with  task_id=task_id%}
+    </div>
+</div>
