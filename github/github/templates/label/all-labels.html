@@ -1,10 +1,10 @@
-<div>
+<div style="margin-top:20px">
   <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#myModal" >
     {% load static %}
     <img src="{% static 'media/plus.png' %}" alt="My image" class="image">
     Add label
 </button>
-{% include 'label/add-label.html' with id=id %}
+{% include 'label/add-label.html' with id=id addLabelForm=addLabelForm %}
 </div>
 
 <div style="margin-top:10px;display: flex;flex-direction: column;max-width: 300px;">

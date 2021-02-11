@@ -1,46 +1,31 @@
-<div>
-    <button type="submit" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#default{{label.name}}{{label.id}}">
-        {% load static %}
-        <img src="{% static 'media/pencil.png' %}" alt="My image" class="image">
-    </button>
-    <!-- Modal -->
+{% load crispy_forms_tags %}
 
-    
-<div class="modal fade" id="default{{label.name}}{{label.id}}" tabindex="-1" role="dialog" aria-labelledby="#modal-{{label.name}}">
-    <form method="post" action="{% url 'labels:updateLabel' id label.id %}">
+<button type="submit" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#update{{label.instance.id}}">
+    Edit
+</button>
+<!-- Modal -->
+   
+<div class="modal fade" id="update{{label.instance.id}}" tabindex="-1" role="dialog" aria-labelledby="#modal-{{label.instance.name}}">
+    <form method="post" action="{% url 'labels:updateLabel' id label.instance.id %}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-                    <h4 class="modal-title" id="myModalLabel">{{label}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{label.instance.name}}</h4>
                 </div>
                 <div class="modal-body">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="name">Label name</label>
-                        {% if label is None %}
-                            <input type="text" class="form-control" id="name"  name="name" required placeholder="Enter label name">
-                        {% else %}
-                            <input type="text" class="form-control" id="name" value={{label.name}} name="name" required placeholder="Enter label name">
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-
-                        {% if label is None %}
-                            <label for="color">Color</label>
-                            <input type="text" required class="form-control" name="color" id="color"placeholder="Label color, a hex value">
-                        {% else %}
-                            <input type="text" required class="form-control" value={{label.color}} name="color" id="color"placeholder="Label color, a hex value">
-                        {% endif %}
-
-                    </div>
+                    <form method="POST" action="{% url 'labels:addLabel' id %}">
+                        {% csrf_token %}
+                        {{ label |crispy }}
+                
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-light">Submit</button>
                 </div>
+            </form>
             </div>
         </div>
     </form>
 </div>
-</div>
+
