@@ -10,3 +10,7 @@ class LabelForm(forms.ModelForm):
             "name",
             "color" 
         ] 
+
+        widgets = {
+            'color': forms.TextInput(attrs={'type': 'color'}),
+        }
