@@ -96,6 +96,7 @@ def detail_view(request, id):
     context["tasks"] = Task.objects.filter(repo_id = id)
     context["allProjects"] = Project.objects.filter(repository_id = id).order_by('-name')
     context["milestones"] = Milestone.objects.filter(repository_id = id).order_by('title')
+    context["allBranches"] = Branch.objects.filter(repository_id=id).order_by('-name')
     context["addLabelForm"] = LabelForm() 
     labels = []
     for label in Label.objects.filter(repo_id = id).order_by('-name'):
