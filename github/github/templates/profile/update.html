@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+
+<button type="submit" style="background-color: rgb(235, 233, 240); border: 1px solid rgb(170, 166, 179);color:rgb(97, 91, 112);border-radius: 1px;padding:2px 7px;font-size: 21px;" data-toggle="modal" data-target="#update{{user.id}}">
+    Edit info
+</button>
+<!-- Modal -->
+   
+<div class="modal fade" id="update{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="#modal-{{user.username}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title" id="myModalUser">{{user.username}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'user:editUser' %}">
+                        {% csrf_token %}
+                        {{ user_update_form |crispy }}
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-light">Submit</button>
+                </div>
+            </form>
+            </div>
+        </div>
+</div>
