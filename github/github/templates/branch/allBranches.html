@@ -1,0 +1,27 @@
+
+{% block content %} 
+  <h1 class="text-center mb-3">Branches</h1>
+  <div>
+    <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#newBranchModal">
+      New branch
+    </button>
+    {% include 'branch/addBranch.html' with id=id %}
+  </div>
+  <br/>
+  {% if allBranches %}
+    {% for b in allBranches %}
+        <div class="card mb-3" >
+            <div class="card-body">
+                <p class="lead"><b>{{ b.name }}</b></p>
+                <form action="http://localhost:8000/branch/delete/{{b.id}}/{{id}}" method="POST">
+                  {% csrf_token %}
+                  <input class="btn btn-default btn-danger" name="delete" style="color:red;text-align:centar;background-Color:white" type="submit" value="Delete"/>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+  {% else %}
+    No branches.
+  {% endif %}
+
+{% endblock %}
