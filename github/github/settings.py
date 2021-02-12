@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'project',
     'wiki',
     'user',
+    'photo',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -151,3 +153,6 @@ LOGIN_REDIRECT_URL = 'landing'
 LOGOUT_REDIRECT_URL = 'landing'
 SESSION_COOKIE_AGE = 1209600
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
