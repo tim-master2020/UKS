@@ -10,6 +10,8 @@
       aria-controls="nav-label" aria-selected="false">Labels</a>
     <a class="nav-item nav-link" id="nav-milestone-tab" data-toggle="tab" href="#nav-milestone" role="tab"
       aria-controls="nav-milestone" aria-selected="false">Milestones</a>
+    <a class="nav-item nav-link" id="nav-branch-tab" data-toggle="tab" href="#nav-branch" role="tab"
+      aria-controls="nav-branch" aria-selected="false">Branches</a>
 
   </div>
 </nav>
@@ -28,5 +30,8 @@
   </div>
   <div class="tab-pane fade" id="nav-milestone" role="tabpanel" aria-labelledby="nav-milestone-tab">
     {% include 'milestone/allMilestones.html' with id=repoData.id %}
+  </div>
+  <div class="tab-pane fade" id="nav-branch" role="tabpanel" aria-labelledby="nav-branch-tab">
+    {% include 'branch/allBranches.html' with id=repoData.id %}
   </div>
 </div>
