@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from repository.models import Repository
 from wiki.models import Wiki
 from . import views
 from django.views.generic import TemplateView
@@ -36,7 +35,8 @@ urlpatterns = [
     path('comments/', include('comment.urls')),
     path('profile/', views.profile, name='profile'),
     path('photo/', include('photo.urls')),
-    path('user/', include('user.urls'))
+    path('user/', include('user.urls')),
+    path('branch/', include('branch.url')),
 ]
 
 if settings.DEBUG:
