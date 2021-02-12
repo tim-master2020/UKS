@@ -1,0 +1,14 @@
+{% block content %} 
+<div>
+    <form method = "post" enctype="multipart/form-data" action="{% url 'photo:addPhoto' %}"> 
+        {% csrf_token %} 
+        {% if image is not None %}
+            <p>You can change your photo here:</p>
+        {% endif %}
+        {{ photo_form.as_p }}
+        <button type="submit" style="background-color: rgb(211, 209, 219); border: none;color:rgb(97, 91, 112);border-radius: 1px;padding:2px 7px">
+            Upload
+        </button> 
+    </form> 
+</div>
+{% endblock %}
