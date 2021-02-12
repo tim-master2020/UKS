@@ -19,6 +19,8 @@ from repository.models import Repository
 from wiki.models import Wiki
 from . import views
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('labels/', include('label.urls')),
@@ -32,4 +34,11 @@ urlpatterns = [
     path('project/', include('project.urls')),
     path('milestone/', include('milestone.urls')),
     path('comments/', include('comment.urls')),
+    path('profile/', views.profile, name='profile'),
+    path('photo/', include('photo.urls')),
+    path('user/', include('user.urls'))
 ]
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
