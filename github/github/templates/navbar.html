@@ -4,6 +4,7 @@
         <img src="{% static 'media/logo.png' %}" alt="My image" class="image">
         Github</a>
     {% if user.is_authenticated %}
+        <a class="btn btn-md" style="display: flex; margin-left: 82%;" href="{% url 'profile' %}">Profile</a>
         <a class="btn btn-md" style="display: flex; margin-left: auto;" href="{% url 'logout' %}">Sign out</a>
     {% endif %}    
 </nav

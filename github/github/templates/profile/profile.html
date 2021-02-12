@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h2 class="text-center mb-3" style="color:rgb(97, 91, 112); padding-top: 10px;font-family: Calibri;">User profile</h2>
+  <div style="padding: 5%; border:1px solid gray">
+    <div style="float:right">
+      <img src="{{ image.photo.url }}" class="img-responsive" style="max-width: 180px;"/>
+      <br/>
+    {% include 'photo/addPhoto.html' %}
+  </div> 
+    <p style="font-size: 20px;color: rgb(138, 161, 184);font-family:Calibri; margin-bottom: -2px;">Username: </p> 
+    <p style="font-size: 22px;color: rgb(65, 90, 114);font-family:Calibri;">{{user.username}}</p>
+    
+    <p style="font-size: 20px;color: rgb(138, 161, 184);font-family:Calibri; margin-bottom: -2px;">First name: </p>
+    <p style="font-size: 22px;color: rgb(65, 90, 114);font-family:Calibri;">{{user.first_name}}</p>
+    
+    <p style="font-size: 20px;color: rgb(138, 161, 184);font-family:Calibri; margin-bottom: -2px;">Last name: </p>
+    <p style="font-size: 22px;color: rgb(65, 90, 114);font-family:Calibri;">{{user.last_name}}</p>
+
+    <p style="font-size: 20px;color: rgb(138, 161, 184);font-family:Calibri; margin-bottom: -2px;">Email: </p>
+    <p style="font-size: 22px;color: rgb(65, 90, 114);font-family:Calibri;">{{user.email}}</p>
+    {% include 'profile/update.html' with user_update_form=user_update_form %}
+  </div>
+  <div>
+  </div>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}
