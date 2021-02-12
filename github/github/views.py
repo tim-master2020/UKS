@@ -2,9 +2,11 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from user.forms import UserForm
+from user.forms import UserForm, UserUpdateForm
+from photo.forms import PhotoForm
 from django.contrib.auth import authenticate
 from django.contrib import messages
+from photo.models import Photo
 
 # Get questions and display them
 def landing(request):
@@ -35,3 +37,10 @@ def register(request):
                           {'user_form':user_form,
                            'registered':registered})
 
+def profile(request):
+    user = request.user
+    form = UserUpdateForm(instance = user) 
+    photoForm = PhotoForm()
+    image = None if Photo.objects.filter(users_id = request.user.id) is None else Photo.objects.filter(users_id = request.user.id)[0]
+    # image = Photo.objects.get(users_id = request.user.id)
+    return render(request,'profile/profile.html',{'user_update_form':form, 'photo_form':photoForm, 'image':image})
