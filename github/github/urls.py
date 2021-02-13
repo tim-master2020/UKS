@@ -37,6 +37,7 @@ urlpatterns = [
     path('photo/', include('photo.urls')),
     path('user/', include('user.urls')),
     path('branch/', include('branch.url')),
+    path('commit/', include('commit.urls'))
 ]
 
 if settings.DEBUG:

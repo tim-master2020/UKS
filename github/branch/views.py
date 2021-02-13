@@ -4,6 +4,7 @@ from django.shortcuts import (get_object_or_404,
                               redirect) 
 from .models import Repository
 from  branch.models import Branch
+from  commit.models import Commit
 from django.contrib import messages
 from .forms import BranchForm
 from django.contrib.auth.models import User
@@ -53,4 +54,7 @@ def update_view(request, id, branch_id):
         return redirect(reverse("repository:detailRepository",args=(id)))
 
 def detail_view(request, id): 
-    return
+    context ={}
+    context["branchData"] = Branch.objects.get(id = id)
+    context["allCommits"] = Commit.objects.filter(branch_id = id)
+    return render(request, "branch/detailBranch.html", context)

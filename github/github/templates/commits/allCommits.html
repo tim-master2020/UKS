@@ -1,0 +1,26 @@
+{% block content %} 
+  <h1 class="text-center mb-3">Commits</h1>
+  
+  {% if allCommits %}
+    {% for commit in allCommits %}
+        <div class="card mb-3" style="height:4rem;">
+            <div class="card-body">
+              <form method="post">
+                {% csrf_token %}
+              </form> 
+              <div style="display: flex; flex-flow: row wrap; align-items: center;">
+                <p class="lead" style="font-size: 13px; color:gray; border: 1px solid gray; border-radius: 5px; padding: 5px;"><b>{{ commit.sha }}</b></p>
+                <div style="width: 20px;"></div>
+                <p class="lead"><b>{{ commit.message }}</b></p>
+                <p class="lead" style="font-size: 13px; right: 0; position: absolute; color:gray; padding-right: 10px;"><b>{{ commit.commitedDate }}</b></p>
+              </div>
+            </div>
+            <br/>
+            <br/>
+          </div>
+    {% endfor %}
+  {% else %}
+    No commits.
+  {% endif %}
+
+{% endblock %}
