@@ -6,7 +6,7 @@
 </button>
 <div class="card" style="margin-top:20px">
     <div class="card-body">
-        <form method="POST" action="{% url 'comment:editComment' id %}">
+        <form method="POST" action="{% url 'comment:editComment' id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form |crispy }}
             <button class="btn btn-outline-info"  type="submit">Edit</button>
