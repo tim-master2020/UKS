@@ -13,7 +13,7 @@ from django.urls import reverse
 
 def addComment(request,task_id):
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST,request.FILES)
         if form.is_valid():
             print('Form is valid!',form)
             comment = form.save(commit=False)
@@ -44,7 +44,7 @@ def editComment(request,id):
     if request.method == "POST":
         print('in edit post')
         obj = get_object_or_404(Comment, id = id)
-        form = CommentForm(request.POST or None, instance = obj)
+        form = CommentForm(request.POST or None,request.FILES, instance = obj)
         if form.is_valid(): 
             form.save()
             return redirect(reverse("task:detailView",args=[obj.task.id]))
