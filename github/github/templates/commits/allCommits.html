@@ -3,7 +3,7 @@
   
   {% if allCommits %}
     {% for commit in allCommits %}
-        <div class="card mb-3" style="height:4rem;">
+        <div class="card mb-3" style="height:7rem;">
             <div class="card-body">
               <form method="post">
                 {% csrf_token %}
@@ -11,7 +11,10 @@
               <div style="display: flex; flex-flow: row wrap; align-items: center;">
                 <p class="lead" style="font-size: 13px; color:gray; border: 1px solid gray; border-radius: 5px; padding: 5px;"><b>{{ commit.sha }}</b></p>
                 <div style="width: 20px;"></div>
-                <p class="lead"><b>{{ commit.message }}</b></p>
+                <div>
+                  <p class="lead"><b>{{ commit.title }}</b></p>
+                  <p class="lead" style="font-size: 15px;"><b>{{ commit.description }}</b></p>
+                </div>
                 <p class="lead" style="font-size: 13px; right: 0; position: absolute; color:gray; padding-right: 10px;"><b>{{ commit.commitedDate }}</b></p>
               </div>
             </div>
