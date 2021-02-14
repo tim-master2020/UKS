@@ -13,6 +13,7 @@ from .forms import RepositoryForm
 from django.contrib.auth.models import User
 from task.models import Task
 from label.forms import LabelForm
+from photo.models import Photo
 
 
 def allRepositories(request):
@@ -98,9 +99,21 @@ def detail_view(request, id):
     context["allProjects"] = Project.objects.filter(repository_id = id).order_by('-name')
     context["milestones"] = Milestone.objects.filter(repository_id = id).order_by('title')
     context["allBranches"] = Branch.objects.filter(repository_id=id).order_by('-name')
+    
     context["addLabelForm"] = LabelForm() 
     labels = []
     for label in Label.objects.filter(repo_id = id).order_by('-name'):
         labels.append(LabelForm(instance=label))
     context['labels'] = labels;
+
+    tasksAssignes = {}
+    for t in Task.objects.filter(repo_id = id):
+        photos = []
+        for a in t.asignees.all():
+            photos.append( None if not Photo.objects.filter(users_id = a.id) else Photo.objects.filter(users_id = a.id)[0])
+        tasksAssignes[t.id] = photos
+    context['tasks_assignes'] = tasksAssignes;
+    print('task assinges',tasksAssignes)
+
+
     return render(request, "repository/detailRepository.html", context)
