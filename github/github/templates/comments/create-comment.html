@@ -1,5 +1,5 @@
 {% load crispy_forms_tags %}
-<form method="POST" action="{% url 'comment:addComment' task_id %}">
+<form method="POST" action="{% url 'comment:addComment' task_id %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ commentForm|crispy }}
     <button class="btn btn-outline-success" type="submit">Comment</button>
