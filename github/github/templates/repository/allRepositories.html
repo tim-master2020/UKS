@@ -13,11 +13,11 @@
         <div class="card mb-3" >
             <div class="card-body">
                 <p class="lead"><b>{{ repo.name }}</b> | {{ repo.creationDate }}</p>
-                <form action="http://localhost:8000/repository/{{repo.id}}/delete" method="POST">
+                <form action="{% url 'repository:deleteRepository' repo.id %}" method="POST">
                   {% csrf_token %}
                   <input class="btn btn-default btn-danger" name="delete" style="color:red;text-align:centar;background-Color:white" type="submit" value="Delete"/>
                 </form>
-                <a style="color:green;margin-left:1%;margin-bottom:-5%;background-Color:white" href="http://localhost:8000/repository/{{repo.id}}/detailRepository">Update</a>
+                <a style="color:green;margin-left:1%;margin-bottom:-5%;background-Color:white" href="{% url 'repository:detailRepository' repo.id %}">Update</a>
             </div>
         </div>
     {% endfor %}

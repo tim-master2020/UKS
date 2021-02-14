@@ -8,7 +8,7 @@
     Update this repository
 </h1>
 
-  <form method="post" action="http://localhost:8000/repository/{{repoData.id}}/update">
+  <form method="post" action="{% url 'repository:updateRepository' repoData.id %}">
     <div class="modal-body">
         {% csrf_token %}
         <div>

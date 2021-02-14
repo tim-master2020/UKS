@@ -2,7 +2,7 @@
 {% block content %} 
 <h1 class="text-center mb-3">Update Wiki</h1>
 
-  <form method="post" action="http://localhost:8000/wiki/{{wiki.id}}/update">
+  <form method="post" action="{% url 'wiki:updateWiki' wiki.id %}">
     <div class="modal-body">
         {% csrf_token %}
         <div>
