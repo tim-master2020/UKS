@@ -1,3 +1,5 @@
+from django.db.models import base
+from django.http.response import HttpResponse
 from django.shortcuts import (get_object_or_404, 
                               render,  
                               HttpResponseRedirect,
@@ -24,7 +26,9 @@ def addBranch(request, id):
         if form.is_valid():
             branch = form.save(commit=False)
             branch.repository_id = id
+            branch.baseBranch = 'master'
             branch.save()
+
             messages.success(request, 'You successfully created a new branch')
             return redirect(reverse("repository:detailRepository",args=(id)))
         else:
@@ -52,6 +56,20 @@ def update_view(request, id, branch_id):
         return redirect(reverse("repository:detailRepository",args=(id)))
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
+
+def createABranchFromExisting(request, id):
+    baseBranch = get_object_or_404(Branch, id = id)
+    baseBranchName = baseBranch.name
+    repo = Repository.objects.get(id = baseBranch.repository_id)
+    form = BranchForm(request.POST)
+    if form.is_valid(): 
+        branch = form.save(commit=False)
+        branch.repository_id = repo.id
+        branch.baseBranch = baseBranchName
+        branch.save()
+        return redirect(reverse("repository:detailRepository", args=[repo.id]))
+    else:
+        return redirect(reverse("repository:detailRepository", args=[repo.id]))
 
 def detail_view(request, id): 
     context ={}
