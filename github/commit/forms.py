@@ -7,5 +7,6 @@ class CommitForm(forms.ModelForm):
         model = Commit 
    
         fields = [ 
-            "message"
+            "title",
+            "description"
         ]
