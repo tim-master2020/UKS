@@ -44,9 +44,10 @@ def addRepository(request):
             repo.users.add(currentUser)
 
             selectedUsers = request.POST.getlist('user', None)
-            for item in selectedUsers:
-                member = User.objects.get(username=item)
-                repo.users.add(member)
+            if (not selectedUsers[0] == 'Choose members'):
+                for item in selectedUsers:
+                    member = User.objects.get(username=item)
+                    repo.users.add(member)
             
             branch = Branch(name="master", repository_id=repo.id)
             branch.save()

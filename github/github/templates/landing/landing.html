@@ -2,9 +2,17 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  <h1 class="text-center mb-3">Welcome {{user.username}}</h1>
+  <h1 class="text-center mb-3" style="margin: 40px 0">Welcome {{user.username}}</h1>
+  {% include 'repository/repositoriesHomePage.html' %}
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
+<div style="font-family: Calibri;">
+<h1 class="text-center mb-3" style="margin: 40px 0;">Welcome to GitHub!</h1>
+  <p style="font-size: 22px;">
+    <a style="background-color: rgb(231, 242, 248); font-size: 22px; padding: 3px 7px; color: rgb(84, 84, 102); border-radius: 3px;" href="{% url 'login' %}">
+      Log In</a> to continue your work.</p>
+  <p style="font-size: 22px;">
+    If you do not have a profile, you can
+    <a style="background-color: rgb(231, 242, 248); font-size: 22px; padding: 3px 7px; color: rgb(84, 84, 102); border-radius: 3px;" href="{% url 'register' %}">Register here.</a>
+</div>
 {% endif %}
 {% endblock %}

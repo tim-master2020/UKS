@@ -7,9 +7,19 @@ from photo.forms import PhotoForm
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from photo.models import Photo
+from repository.models import Repository
+from django.contrib.auth.models import User
 
 # Get questions and display them
 def landing(request):
+    if(request.user is not None):
+        allRepositories = Repository.objects.filter(users=request.user.id)
+        # branchCount = Branch.objects.all()
+
+        allUsers = User.objects.exclude(username=request.user)
+        context = {'allRepositories': allRepositories}
+        return render(request, "landing/landing.html", context)
+    
     return render(request, 'landing/landing.html')
 
 def login(request):
@@ -41,6 +51,6 @@ def profile(request):
     user = request.user
     form = UserUpdateForm(instance = user) 
     photoForm = PhotoForm()
-    image = None if Photo.objects.filter(users_id = request.user.id) is None else Photo.objects.filter(users_id = request.user.id)[0]
+    image = None if not Photo.objects.filter(users_id = request.user.id) else Photo.objects.filter(users_id = request.user.id)[0]
     # image = Photo.objects.get(users_id = request.user.id)
     return render(request,'profile/profile.html',{'user_update_form':form, 'photo_form':photoForm, 'image':image})
