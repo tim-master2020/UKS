@@ -7,9 +7,19 @@ from photo.forms import PhotoForm
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from photo.models import Photo
+from repository.models import Repository
+from django.contrib.auth.models import User
 
 # Get questions and display them
 def landing(request):
+    if(request.user is not None):
+        allRepositories = Repository.objects.filter(users=request.user.id)
+        # branchCount = Branch.objects.all()
+
+        allUsers = User.objects.exclude(username=request.user)
+        context = {'allRepositories': allRepositories}
+        return render(request, "landing/landing.html", context)
+    
     return render(request, 'landing/landing.html')
 
 def login(request):
