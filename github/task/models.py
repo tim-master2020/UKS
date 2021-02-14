@@ -29,7 +29,6 @@ class Task(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300,blank=True)
     openingDate = models.DateTimeField(auto_now_add=True)
-    closingDate = models.DateTimeField(null=True,blank=True)
     taskStatus = models.CharField(max_length=50,choices = [(tag.value, tag.name) for tag in TaskStatus], default=TaskStatus.TO_DO.name)
     taskState = models.CharField(max_length=50,choices = [(tag.value, tag.name) for tag in TaskState],default=TaskState.OPENED.name)
     taskPriorty = models.CharField(max_length=50,choices = [(tag.value, tag.name) for tag in TaskPriorty],default=TaskPriorty.LOW.name)
