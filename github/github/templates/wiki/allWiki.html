@@ -6,14 +6,12 @@
         href="{% url 'wiki:viewWiki' repoData.wiki_id %}">Change Wiki</a>
 
         {% if repoData.wiki.content %}
-        <div style="font-size: 22px;">
-            <label>Content:</label>
+            <label style="font-size: 22px;">Content:</label>
             <br />
-            <label>{{ repoData.wiki.content }}</label>
+            <label style="font-size: 22px;">{{ repoData.wiki.content }}</label>
             {% else %}
-            <label>Wiki has no content.</label>
+            <label style="font-size: 22px;">Wiki has no content.</label>
             {% endif %}
-        </div>
     </div>
 
 </div>
