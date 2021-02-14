@@ -1,35 +1,32 @@
 {% if tasks %}
 {% for task in tasks %}
 <a href="{% url 'task:detailView' task.id %}">
-<div class="card mb-3">
-    <div class="card-body">
-        <h5>{{ task.title }} by {{task.author}}</h5>
-        <br/>
-        {%if task.asignees.all%} 
-        <div class="card">
-            <div class="card-body">
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3>{{ task.title }}</h3>
+            <span class="badge badge-secondary">{{task.taskStatus}}</span>
+            <span class="badge badge-secondary">{{task.taskState}}</span>
+            <span class="badge badge-secondary">{{task.taskPriorty}}</span>
+            <br/>
+            {%if task.asignees.all%}
                 <label>Assingees:</label>
                 <br>
-                
                 {% for key,value in tasks_assignes.items %}
                     {% ifequal key task.id %}
                         {% for pic in value%}
                             {% if pic %}
-                                <img src="{{ pic.photo.url }}" class="img-responsive" style="max-width: 50px;border-radius: 55px;"/>
+                            <img src="{{ pic.photo.url }}" class="img-responsive" style="max-width: 50px;border-radius: 55px;" />
                             {% endif %}
                         {% endfor %}
                     {% endifequal %}
                 {% endfor %}
-                
-            
-            </div>
-          </div>
-        {% endif %}
+            {% endif %}
 
+            <p style="margin-top: 10px;text-align: right;">Author: {{task.author}}</p>
+        </div>
     </div>
-</div>
 </a>
 {% endfor %}
 {% else %}
-    <p style="margin-top:30px">This repository currently has no tasks</p>
+<p style="margin-top:30px">This repository currently has no tasks</p>
 {% endif %}
