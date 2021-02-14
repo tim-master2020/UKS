@@ -51,6 +51,6 @@ def profile(request):
     user = request.user
     form = UserUpdateForm(instance = user) 
     photoForm = PhotoForm()
-    image = None if Photo.objects.filter(users_id = request.user.id) is None else Photo.objects.filter(users_id = request.user.id)[0]
+    image = None if not Photo.objects.filter(users_id = request.user.id) else Photo.objects.filter(users_id = request.user.id)[0]
     # image = Photo.objects.get(users_id = request.user.id)
     return render(request,'profile/profile.html',{'user_update_form':form, 'photo_form':photoForm, 'image':image})
