@@ -2,7 +2,7 @@
 {% block content %} 
   <h1 class="text-center mb-3">Repositories</h1>
   <div>
-    <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#newRepoModal">
+    <button type="button" class="btn btn-outline-secondary" style="color:black" data-toggle="modal" data-target="#newRepoModal">
       New repository
     </button>
     {% include 'repository/addRepository.html' with id=id %}
@@ -12,12 +12,15 @@
     {% for repo in allRepositories %}
         <div class="card mb-3" >
             <div class="card-body">
-                <p class="lead"><b>{{ repo.name }}</b> | {{ repo.creationDate }}</p>
-                <form action="{% url 'repository:deleteRepository' repo.id %}" method="POST">
-                  {% csrf_token %}
-                  <input class="btn btn-default btn-danger" name="delete" style="color:red;text-align:centar;background-Color:white" type="submit" value="Delete"/>
-                </form>
-                <a style="color:green;margin-left:1%;margin-bottom:-5%;background-Color:white" href="{% url 'repository:detailRepository' repo.id %}">Update</a>
+                <p class="lead"><b style="font-size: 26px;">{{ repo.name }}</b> | {{ repo.creationDate }}</p>
+                <div style="display: flex; flex-direction: row;">
+                  <a style="background-color: rgb(125, 142, 179);color:white;padding:4px 10px;font-size: 20px; border-radius: 3px;text-decoration: none;margin-right: 15px;" href="{% url 'repository:detailRepository' repo.id %}">
+                    Details</a>
+                  <form action="{% url 'repository:deleteRepository' repo.id %}" method="POST">
+                    {% csrf_token %}
+                    <input name="delete" style="background-color: rgb(223, 126, 126);color:white;padding:4px 10px;font-size: 20px; border-radius: 3px;text-decoration: none; border:none" type="submit" value="Delete"/>
+                  </form>
+              </div>
             </div>
         </div>
     {% endfor %}

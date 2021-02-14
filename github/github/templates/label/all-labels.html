@@ -1,8 +1,7 @@
 <div style="margin-top:20px">
-  <button type="button" class="btn btn-outline-primary" style="color:black" data-toggle="modal" data-target="#myModal" >
-    {% load static %}
-    <img src="{% static 'media/plus.png' %}" alt="My image" class="image">
-    Add label
+  <h3 class="text-center mb-3" style="color: rgb(27, 27, 56); margin-top: 15px;">Labels</h3>
+  <button type="button" class="btn btn-outline-secondary" style="color: black" data-toggle="modal" data-target="#myModal" >
+    New label
 </button>
 {% include 'label/add-label.html' with id=id addLabelForm=addLabelForm %}
 </div>
