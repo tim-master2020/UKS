@@ -1,0 +1,17 @@
+{% block content %} 
+  <br/>
+  {% if allRepositories %}
+  <p style="font-size: 23px; color:rgb(86, 98, 109);margin:15px">Here are your repositories:</p>
+    {% for repo in allRepositories %}
+        <div class="card mb-3" style="background-color: rgb(250, 251, 255);" >
+            <div class="card-body">
+                <p class="lead"><b>{{ repo.name }}</b> | {{ repo.creationDate }}</p>
+                <a style="background-color: rgb(125, 142, 179);color:white;padding:4px 10px;font-size: 20px; border-radius: 3px;text-decoration: none;" href="{% url 'repository:detailRepository' repo.id %}">Details</a>
+            </div>
+        </div>
+    {% endfor %}
+  {% else %}
+    <p style="color:rgb(76, 81, 87);font-size: 22px;">You do not have any repository currently.</p>
+  {% endif %}
+
+{% endblock %}
