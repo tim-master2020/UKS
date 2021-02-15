@@ -68,5 +68,23 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Repository.objects.count(), 0)
+    
+    def test_update_repository(self):
+        response = self.client.post(self.addRepository, {
+            'name' : 'repo',
+            'user' : ['Choose members']
+        })
+
+        self.assertEquals(Repository.objects.count(), 1)
+        self.assertEquals(Repository.objects.get(name='repo').name, 'repo')
+
+        response = self.client.post(self.updateRepository, {
+            'name' : 'new name'
+        })
+
+        self.assertEquals(Repository.objects.get(name='new name').name, 'new name')
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Repository.objects.count(), 1)
 
     
