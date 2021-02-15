@@ -56,4 +56,17 @@ class TestViews(TestCase):
         self.assertEquals(Repository.objects.get(name='UKS2').name, 'UKS2')
         self.assertEquals(Branch.objects.get(name='master').name, 'master')
 
+    def test_delete_existing_repository(self):
+        response = self.client.post(self.addRepository, {
+            'name' : 'repo',
+            'user' : ['Choose members']
+        })
+
+        self.assertEquals(Repository.objects.count(), 1)
+
+        response = self.client.post(self.deleteRepository)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Repository.objects.count(), 0)
+
     
