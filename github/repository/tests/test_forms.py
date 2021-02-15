@@ -9,3 +9,11 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
+
+    def test_repository_form_is_valid_with_members(self):
+        form = RepositoryForm(data={
+            'name' : 'Repo',
+            'user' : ['mina']
+        })
+
+        self.assertTrue(form.is_valid())
