@@ -35,7 +35,6 @@ def register(request):
             user.save()
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
             registered = True
             messages.success(request, 'Your account has been created! You are able to log in now!')
             return redirect('login')
