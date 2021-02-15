@@ -46,4 +46,14 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Repository.objects.get(name='UKS1').name, 'UKS1')
 
+    def test_add_new_repository_check_is_master_branch_created(self):
+        response = self.client.post(self.addRepository, {
+            'name' : 'UKS2',
+            'user' : ['Choose members']
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Repository.objects.get(name='UKS2').name, 'UKS2')
+        self.assertEquals(Branch.objects.get(name='master').name, 'master')
+
     
