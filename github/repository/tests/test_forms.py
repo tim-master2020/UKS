@@ -17,3 +17,8 @@ class TestForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
+
+    def test_repository_form_is_not_valid(self):
+        form = RepositoryForm(data={})
+
+        self.assertFalse(form.is_valid())
