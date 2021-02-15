@@ -27,5 +27,13 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'repository/allRepositories.html')
     
+    def test_add_new_repository_no_members(self):
+        response = self.client.post(self.addRepository, {
+            'name' : 'UKS',
+            'user' : ['Choose members']
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Repository.objects.get(name='UKS').name, 'UKS')
 
     
