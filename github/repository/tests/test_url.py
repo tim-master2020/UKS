@@ -14,3 +14,7 @@ class TestUrl(SimpleTestCase):
     def test_delete_url_is_resolved(self):
         url = reverse('repository:deleteRepository', args=[1])
         self.assertEquals(resolve(url).func, delete_view)
+
+    def test_update_url_is_resolved(self):
+        url = reverse('repository:updateRepository', args=[1])
+        self.assertEquals(resolve(url).func, update_view)
