@@ -18,3 +18,7 @@ class TestUrl(SimpleTestCase):
     def test_update_url_is_resolved(self):
         url = reverse('repository:updateRepository', args=[1])
         self.assertEquals(resolve(url).func, update_view)
+
+    def test_detail_url_is_resolved(self):
+        url = reverse('repository:detailRepository', args=[1])
+        self.assertEquals(resolve(url).func, detail_view)
