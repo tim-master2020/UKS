@@ -36,4 +36,14 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Repository.objects.get(name='UKS').name, 'UKS')
 
+    def test_add_new_repository_withMembers(self):
+        member = User.objects.create_user(username='testmember', password='12345')
+        response = self.client.post(self.addRepository, {
+            'name' : 'UKS1',
+            'user' : ['testmember']
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Repository.objects.get(name='UKS1').name, 'UKS1')
+
     
