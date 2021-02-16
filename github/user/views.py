@@ -17,3 +17,4 @@ def editUser(request):
             return redirect('/profile')
         else:
             print('not valid form when updating!',form.errors)
+            return redirect('/profile')
