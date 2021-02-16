@@ -62,27 +62,6 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Milestone.objects.count(), 1)
-    
-    def test_update_milestone_error(self):
-        response = self.client.post(self.add_ms, {
-            'title' : 'UKS',
-            'description' : 'first milestone',
-            'dueDate' : '06/25/21'
-        })
-
-        self.assertEquals(Milestone.objects.count(), 1)
-        self.assertEquals(Milestone.objects.get(title = 'UKS').title, 'UKS')
-
-        test_ms1 = Milestone.objects.get(title = 'UKS')
-
-        response = self.client.post(reverse('milestone:updateMilestone', args=[self.test_repo.id, test_ms1.id]), {
-            'title' : 'new title',
-            'description' : 'new desc',
-            'dueDate' : 'date'
-        })
-
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(Milestone.objects.filter(title='new title').count(), 0)
 
     def test_delete_milestone(self):  
         response = self.client.post(self.add_ms, {

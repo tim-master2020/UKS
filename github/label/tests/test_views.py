@@ -11,7 +11,7 @@ import json
 class TestViews(TestCase):
 
     def setUp(self):
-        self.client = Client();
+        self.client = Client()
 
         self.addLabel = reverse('labels:addLabel', args=[1])
         self.deleteLabel = reverse('labels:deleteLabel', args=[1,1])
