@@ -10,7 +10,7 @@ import json
 class TestViews(TestCase):
 
     def setUp(self):
-        self.client = Client();
+        self.client = Client()
 
         self.allRepositoriesUrl = reverse('repository:allRepositories')
         self.addRepository = reverse('repository:addRepository')
@@ -63,8 +63,10 @@ class TestViews(TestCase):
         })
 
         self.assertEquals(Repository.objects.count(), 1)
+        self.assertEquals(Repository.objects.get(name = 'repo').name, 'repo')
+        test_repo = Repository.objects.get(name = 'repo')
 
-        response = self.client.post(self.deleteRepository)
+        response = self.client.post(reverse('repository:deleteRepository', args=[test_repo.id]))
 
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Repository.objects.count(), 0)
@@ -76,9 +78,10 @@ class TestViews(TestCase):
         })
 
         self.assertEquals(Repository.objects.count(), 1)
-        self.assertEquals(Repository.objects.get(name='repo').name, 'repo')
+        self.assertEquals(Repository.objects.get(name = 'repo').name, 'repo')
+        test_repo = Repository.objects.get(name = 'repo')
 
-        response = self.client.post(self.updateRepository, {
+        response = self.client.post(reverse('repository:updateRepository', args=[test_repo.id]), {
             'name' : 'new name'
         })
 
