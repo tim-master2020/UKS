@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/Uks
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - new
+  db:
+    container_name: db
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+    - POSTGRES_DB=Uks
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=admin
+    networks:
+      - new
+    
+volumes:
+  pgdata:
+networks:
+  new:
