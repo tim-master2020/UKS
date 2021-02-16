@@ -23,7 +23,6 @@ def addLabel(request,id):
     context = {}
     if request.method == 'POST':
         form = LabelForm(request.POST)
-        print('form',form)
         if form.is_valid():
             print('Form is valid!')
             label = form.save(commit=False)
