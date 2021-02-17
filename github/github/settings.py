@@ -73,7 +73,7 @@ STATICFILES_DIRS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["github/templates"],
+        'DIRS': ["github/templates/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,9 +104,9 @@ DATABASES = {
 
         'PASSWORD': 'admin',
 
-        'HOST': 'localhost',
+        'HOST': 'db',
 
-        'PORT': '5432',
+        'PORT': 5432,
 
     }
 }
