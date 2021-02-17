@@ -6,13 +6,17 @@ from .models import Commit
 from django.contrib.auth.models import User
 import random
 import string
+from django.core.cache import cache
 from django.shortcuts import (get_object_or_404, 
                               render,  
                               HttpResponseRedirect,
                               redirect) 
 
+def commits_key():
+    return "commits.all."
+
 def all_commits(request):
-    commits = Commit.objects.all
+    commits = get_commits_from_cache()
     context = {'allCommits': commits}
     return render(request, 'commits/allCommits.html',context)
 
@@ -38,3 +42,12 @@ def add_commit(request, id):
         form = CommitForm()
 
     return render(request, 'commit/addCommit.html', {'form': form})
+
+def get_commits_from_cache():
+    commits = cache.get(commits_key())
+    
+    if not commits:
+        commits = Commit.objects.all
+        cache.set(commits_key(),commits)
+
+    return commits
