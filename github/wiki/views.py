@@ -8,13 +8,15 @@ from repository.models import Repository
 from  branch.models import Branch
 from django.contrib import messages
 from .forms import WikiForm
+from django.core.cache import cache
 
-# Create your views here.
+def wiki_key(id):
+    return "wiki."+str(id)
 
 def detail_view(request, id): 
     context ={} 
-
-    context["wiki"] = Wiki.objects.get(id = id) 
+    wiki = get_wiki_from_cache(id)
+    context["wiki"] = wiki
     
     return render(request, "wiki/wiki.html", context)
 
@@ -22,6 +24,10 @@ def detail_view(request, id):
 def update_view(request, id):  
     context ={} 
    
+    wiki = get_wiki_from_cache(id)
+    if not wiki:
+        return redirect(reverse("repository:detailRepository",args=[repo[0].id]))
+
     obj = get_object_or_404(Wiki, id = id) 
     form = WikiForm(request.POST or None, instance = obj)
 
@@ -37,3 +43,13 @@ def update_view(request, id):
     context['form'] = form
   
     return render(request, "wiki/wiki.html", context)
+
+def get_wiki_from_cache(wiki_id):
+    wiki = cache.get(wiki_key(wiki_id))
+    if not wiki:
+        try:
+            wiki = Wiki.objects.get(id=wiki_id)
+        except:
+            return None
+        cache.set(wiki_key(wiki_id),wiki)
+    return wiki
