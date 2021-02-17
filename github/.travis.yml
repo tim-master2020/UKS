@@ -1,0 +1,16 @@
+language: python
+services:
+  - postgresql
+python:
+  - "3.9.0"
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c "create database Uks;" -U postgres
+  - psql -c "create user admin with password 'admin';" -U postgres
+  - psql -c "alter role admin superuser;" -U postgres
+script:
+  - python github/manage.py test
+branches:
+  only:
+  - master
