@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from task.models import Task
 from label.forms import LabelForm
 from photo.models import Photo
-
+from django.contrib.auth.decorators import login_required
 
 def allRepositories(request):
     allRepositories = Repository.objects.filter(users=request.user.id)
@@ -26,6 +26,7 @@ def allRepositories(request):
     context = {'allRepositories': allRepositories, 'branchCount' : branchCount, 'allUsers': allUsers}
     return render(request, "repository/allRepositories.html", context)
 
+@login_required
 def addRepository(request):
     if request.method == 'POST':
         form = RepositoryForm(request.POST)
@@ -63,11 +64,11 @@ def addRepository(request):
 
     return render(request, 'repository/addRepository.html', {'form': form})
 
+@login_required
 def delete_view(request, id): 
     context ={} 
   
     obj = get_object_or_404(Repository, id = id) 
-  
   
     if request.method =="POST": 
  
@@ -76,6 +77,7 @@ def delete_view(request, id):
   
     return HttpResponseRedirect("/repository")
 
+@login_required
 def update_view(request, id):  
     context ={} 
    
@@ -104,7 +106,7 @@ def detail_view(request, id):
     labels = []
     for label in Label.objects.filter(repo_id = id).order_by('-name'):
         labels.append(LabelForm(instance=label))
-    context['labels'] = labels;
+    context['labels'] = labels
 
     tasksAssignes = {}
     for t in Task.objects.filter(repo_id = id):
@@ -112,7 +114,7 @@ def detail_view(request, id):
         for a in t.asignees.all():
             photos.append( None if not Photo.objects.filter(users_id = a.id) else Photo.objects.filter(users_id = a.id)[0])
         tasksAssignes[t.id] = photos
-    context['tasks_assignes'] = tasksAssignes;
+    context['tasks_assignes'] = tasksAssignes
     print('task assinges',tasksAssignes)
 
 

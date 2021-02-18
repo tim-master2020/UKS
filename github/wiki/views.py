@@ -9,6 +9,7 @@ from  branch.models import Branch
 from django.contrib import messages
 from .forms import WikiForm
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 
 def wiki_key(id):
     return "wiki."+str(id)
@@ -20,7 +21,7 @@ def detail_view(request, id):
     
     return render(request, "wiki/wiki.html", context)
 
-
+@login_required
 def update_view(request, id):  
     context ={} 
    

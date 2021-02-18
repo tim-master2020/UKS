@@ -8,9 +8,9 @@ from django.shortcuts import (get_object_or_404,
                               HttpResponseRedirect,
                               redirect)
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-
+@login_required
 def addComment(request,task_id):
     if request.method == 'POST':
         form = CommentForm(request.POST,request.FILES)
@@ -25,6 +25,7 @@ def addComment(request,task_id):
     else:
         return redirect(reverse("task:detailView",args=(task_id)))
 
+@login_required
 def deleteComment(request,id):
     print('in delete comment view') 
     comment = get_object_or_404(Comment, id = id)
@@ -33,7 +34,7 @@ def deleteComment(request,id):
         comment.delete() 
     return redirect(reverse("task:detailView",args=[task.id]))
 
-
+@login_required
 def editComment(request,id):
 
     if request.method == "GET":

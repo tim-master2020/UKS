@@ -8,6 +8,7 @@ from django.urls import reverse
 from  branch.models import Branch
 from django.contrib import messages
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 
 def milestone_key(id):
     return "milestone."+str(id)
@@ -20,7 +21,7 @@ def all_milestones(request):
     context = {'milestones': milestones}
     return render(request, 'milestone/allMilestones.html',context)
 
-
+@login_required
 def add_milestone(request, id):
     if request.method == 'POST':
         form = MilestoneForm(request.POST)
@@ -39,6 +40,7 @@ def add_milestone(request, id):
 
     return render(request, 'milestone/addMilestone.html', {'form': form})
 
+@login_required
 def update_milestone(request, id, milestone_id):
     context ={}
     milestone = get_milestone_from_cache(milestone_id)
@@ -52,6 +54,7 @@ def update_milestone(request, id, milestone_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def delete_milestone(request, id, milestone_id): 
     context ={} 
     milestone = get_milestone_from_cache(milestone_id)

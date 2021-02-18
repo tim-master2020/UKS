@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 import random
 import string
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import (get_object_or_404, 
                               render,  
                               HttpResponseRedirect,
@@ -20,6 +21,7 @@ def all_commits(request):
     context = {'allCommits': commits}
     return render(request, 'commits/allCommits.html',context)
 
+@login_required
 def add_commit(request, id):
     if request.method == 'POST':
         form = CommitForm(request.POST)

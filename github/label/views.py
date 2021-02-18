@@ -13,12 +13,14 @@ from .forms import LabelForm
 from repository.models import Repository
 from repository.views import detail_view
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 
 def all(request):
     labels = Label.objects.all
     context = {'all_labels': labels}
     return render(request, 'label/all-labels.html',context)
 
+@login_required
 def addLabel(request,id):
     context = {}
     if request.method == 'POST':
@@ -38,6 +40,7 @@ def addLabel(request,id):
     context["form"] = form     
     return render(request, 'label/add-label.html',{'form':form,'id':id})
 
+@login_required
 def updateLabel(request,id,label_id):
     context ={}
     obj = get_object_or_404(Label, id = label_id) 
@@ -48,6 +51,7 @@ def updateLabel(request,id,label_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def deleteLabel(request, id,label_id): 
     context ={} 
     obj = get_object_or_404(Label, id = label_id)   
