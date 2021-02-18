@@ -10,7 +10,7 @@ before_script:
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
 script:
-  - python github/manage.py test
+  - python github/manage.py test repository label milestone
 branches:
   only:
   - master
