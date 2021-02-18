@@ -12,6 +12,7 @@ from task.models import Task
 from repository.models import Repository
 from milestone.models import Milestone
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 
 def project_key(id):
     return "project."+str(id)
@@ -24,7 +25,7 @@ def all_projects(request):
     context = {'allProjects': projects}
     return render(request, 'project/allProjects.html',context)
 
-
+@login_required()
 def add_project(request, id):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -43,6 +44,7 @@ def add_project(request, id):
 
     return render(request, 'project/addProject.html', {'form': form})
 
+@login_required
 def update_project(request, id, project_id):
     context ={}
     project = get_project_from_cache(project_id)
@@ -56,6 +58,7 @@ def update_project(request, id, project_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def delete_project(request, id, project_id): 
     context ={} 
     project = get_project_from_cache(project_id)
@@ -68,6 +71,7 @@ def delete_project(request, id, project_id):
   
     return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def add_tasks(request, project_id):
     selectedTasks = request.POST.getlist("tasks")
     project = get_project_from_cache(project_id)
@@ -82,6 +86,7 @@ def add_tasks(request, project_id):
         task.save()
     return redirect(reverse("project:detailProject",args=[project.id]))
 
+@login_required
 def add_milestones(request, project_id):
     selectedMs = request.POST.getlist("milestones")
     project = get_project_from_cache(project_id)
