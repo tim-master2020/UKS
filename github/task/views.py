@@ -7,6 +7,7 @@ from label.models import Label
 from project.models import Project
 from comment.models import Comment
 from comment.forms import CommentForm
+from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import (get_object_or_404, 
@@ -15,11 +16,16 @@ from django.shortcuts import (get_object_or_404,
                               redirect)
 from django.urls import reverse
 
+def task_key(id):
+    return "task."+str(id)
+
 def detailView(request, id,form = None): 
     if request.method == 'GET':
         print('in get')
         context ={} 
-        task = Task.objects.get(pk = id)
+        task = get_task_from_cache(id)
+        if not task:
+            return redirect(reverse("repository:detailRepository",args=[task.repo_id]))
         repo_id = task.repo_id
         asignees = task.asignees.all()
         form = TaskForm(
@@ -41,12 +47,14 @@ def detailView(request, id,form = None):
         return render(request, "task/detail-task.html", {'form': form,'repo_id':repo_id,'task_id':id,'comments':comments,'commentForm':commentForm,'currentUser':request.user})
         
     if request.method == 'POST':
-        obj = get_object_or_404(Task, id = id)
-        print('obj at update',obj) 
-        form = TaskForm(request.POST or None, instance = obj,repo_id=obj.repo_id)
+        task = get_task_from_cache(id)
+        if not task:
+            return redirect(reverse("repository:detailRepository",args=[task.repo_id]))
+        print('obj at update',task) 
+        form = TaskForm(request.POST or None, instance = task,repo_id=task.repo_id)
         if form.is_valid(): 
             form.save()
-            return redirect(reverse("repository:detailRepository",args=[obj.repo_id]))
+            return redirect(reverse("repository:detailRepository",args=[task.repo_id]))
         else:
             print('not valid form when updating!',form.errors)
 
@@ -80,11 +88,27 @@ def newTask(request,repo_id):
 @login_required
 def deleteTask(request,id):
     context ={} 
-    obj = get_object_or_404(Task, id = id)
-    repo = Repository.objects.get(name = obj.repo)  
+    task = get_task_from_cache(id)
+     
+    if not task:
+        repo = Repository.objects.get(name = task.repo)
+        return redirect(reverse("repository:detailRepository",args=(repo.id)))
+    repo = Repository.objects.get(name = task.repo) 
     if request.method =="POST": 
-        obj.delete() 
+        task.delete()
+        remove_task_from_cache(id) 
     return redirect(reverse("repository:detailRepository",args=[repo.id]))
 
+def get_task_from_cache(task_id):
+    task = cache.get(task_key(task_id))
+    if not task:
+        try:
+            task = Task.objects.get(id=task_id)
+        except:
+            return None
+        cache.set(task_key(task_id), task)
+    return task
 
+def remove_task_from_cache(task_id):
+    cache.delete(task_key(task_id))
 
