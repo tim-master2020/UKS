@@ -11,7 +11,7 @@ from django.contrib import messages
 from .forms import BranchForm
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
 
 def allBranches(request):
     repoId = request.path.split("/")[2]
@@ -19,6 +19,7 @@ def allBranches(request):
     context = {'allBranches': allBranches}
     return render(request, "branch/allBranches.html", context)
 
+@login_required
 def addBranch(request, id):
     if request.method == 'POST':
         form = BranchForm(request.POST)
@@ -39,6 +40,7 @@ def addBranch(request, id):
 
     return render(request, 'branch/addBranch.html', {'form': form})
 
+@login_required
 def delete_view(request, branch_id, id): 
     obj = get_object_or_404(Branch, id = branch_id)   
 
@@ -47,6 +49,7 @@ def delete_view(request, branch_id, id):
   
     return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def update_view(request, id, branch_id):  
     context ={}
     obj = get_object_or_404(Branch, id = branch_id) 
@@ -57,6 +60,7 @@ def update_view(request, id, branch_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def createABranchFromExisting(request, id):
     baseBranch = get_object_or_404(Branch, id = id)
     baseBranchName = baseBranch.name

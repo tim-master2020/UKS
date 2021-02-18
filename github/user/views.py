@@ -6,8 +6,9 @@ from django.shortcuts import (get_object_or_404,
                               HttpResponseRedirect,
                               redirect)
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def editUser(request):
     if request.method == "POST":
         obj = request.user

@@ -13,6 +13,7 @@ from .forms import LabelForm
 from repository.models import Repository
 from repository.views import detail_view
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 
 def labels_key():
@@ -26,6 +27,7 @@ def all(request):
     context = {'all_labels': labels}
     return render(request, 'label/all-labels.html',context)
 
+@login_required
 def addLabel(request,id):
     context = {}
     if request.method == 'POST':
@@ -45,6 +47,7 @@ def addLabel(request,id):
     context["form"] = form     
     return render(request, 'label/add-label.html',{'form':form,'id':id})
 
+@login_required
 def updateLabel(request,id,label_id):
     context ={}
     label = get_label_from_cache(label_id)
@@ -58,6 +61,7 @@ def updateLabel(request,id,label_id):
     else:
         return redirect(reverse("repository:detailRepository",args=(id)))
 
+@login_required
 def deleteLabel(request, id,label_id): 
     context ={} 
     label = get_label_from_cache(label_id)  

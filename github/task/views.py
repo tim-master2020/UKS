@@ -8,6 +8,7 @@ from project.models import Project
 from comment.models import Comment
 from comment.forms import CommentForm
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import (get_object_or_404, 
                               render,  
@@ -26,7 +27,7 @@ def detailView(request, id,form = None):
         if not task:
             return redirect(reverse("repository:detailRepository",args=[task.repo_id]))
         repo_id = task.repo_id
-        asignees = task.asignees.all();
+        asignees = task.asignees.all()
         form = TaskForm(
         {'title':task.title,
         'description':task.description,
@@ -57,16 +58,16 @@ def detailView(request, id,form = None):
         else:
             print('not valid form when updating!',form.errors)
 
+@login_required
 def newTask(request,repo_id): 
-    print('in new task view');
+
     if request.method == 'GET':
         print('in new task view GET'); 
         form = TaskForm(repo_id = repo_id)
         return render(request, "task/detail-task.html", {'form': form,'repo_id':repo_id,'is_adding':True})
 
     if request.method == 'POST':
-        print('in new task view POST');
-        print('request is',request)
+        print('in new task view POST')
         form = TaskForm(request.POST)
         if form.is_valid():
             print('Form is valid!')
@@ -84,6 +85,7 @@ def newTask(request,repo_id):
         else:
             print('Form is not valid!')
     
+@login_required
 def deleteTask(request,id):
     context ={} 
     task = get_task_from_cache(id)
