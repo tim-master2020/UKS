@@ -7,11 +7,16 @@ from .forms import MilestoneForm
 from django.urls import reverse
 from  branch.models import Branch
 from django.contrib import messages
+from django.core.cache import cache
 
-# Create your views here.
+def milestone_key(id):
+    return "milestone."+str(id)
+
+def milestones_key():
+    return "milestones.all."
 
 def all_milestones(request):
-    milestones = Milestone.objects.all
+    milestones = get_milestones_from_cache()
     context = {'milestones': milestones}
     return render(request, 'milestone/allMilestones.html',context)
 
@@ -36,8 +41,11 @@ def add_milestone(request, id):
 
 def update_milestone(request, id, milestone_id):
     context ={}
-    obj = get_object_or_404(Milestone, id = milestone_id) 
-    form = MilestoneForm(request.POST or None, instance = obj) 
+    milestone = get_milestone_from_cache(milestone_id)
+    if not milestone:
+        return redirect(reverse("repository:detailRepository",args=(id)))
+
+    form = MilestoneForm(request.POST or None, instance = milestone) 
     if form.is_valid(): 
         form.save() 
         return redirect(reverse("repository:detailRepository",args=(id)))
@@ -46,9 +54,35 @@ def update_milestone(request, id, milestone_id):
 
 def delete_milestone(request, id, milestone_id): 
     context ={} 
-    obj = get_object_or_404(Milestone, id = milestone_id)   
+    milestone = get_milestone_from_cache(milestone_id)
+    if not milestone:
+        return redirect(reverse("repository:detailRepository",args=(id)))  
 
     if request.method =="POST":
-        obj.delete()
+        milestone.delete()
+        remove_milestone_from_cache(milestone_id)
   
     return redirect(reverse("repository:detailRepository",args=(id)))
+
+def get_milestone_from_cache(milestone_id):
+    milestone = cache.get(milestone_key(milestone_id))
+    if not milestone:
+        try:
+            milestone = Milestone.objects.get(id=milestone_id)
+        except:
+            return None
+        cache.set(milestone_key(milestone_id), milestone)
+    return milestone
+
+def get_milestones_from_cache():
+    milestones = cache.get(milestones_key)
+    if not milestones:
+        try:
+            milestones = Milestone.objects.all()
+        except:
+            return None
+        cache.set(milestones_key, milestones)
+    return milestones
+
+def remove_milestone_from_cache(milestone_id):
+    cache.delete(milestone_key(milestone_id))
