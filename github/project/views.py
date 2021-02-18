@@ -11,11 +11,16 @@ from django.http import HttpResponse
 from task.models import Task
 from repository.models import Repository
 from milestone.models import Milestone
+from django.core.cache import cache
 
-# Create your views here.
+def project_key(id):
+    return "project."+str(id)
+
+def projects_key():
+    return "project.all."
 
 def all_projects(request):
-    projects = Project.objects.all
+    projects = get_projects_from_cache()
     context = {'allProjects': projects}
     return render(request, 'project/allProjects.html',context)
 
@@ -40,8 +45,11 @@ def add_project(request, id):
 
 def update_project(request, id, project_id):
     context ={}
-    obj = get_object_or_404(Project, id = project_id) 
-    form = ProjectForm(request.POST or None, instance = obj) 
+    project = get_project_from_cache(project_id)
+    if not project:
+        return redirect(reverse("repository:detailRepository",args=(id)))
+
+    form = ProjectForm(request.POST or None, instance = project) 
     if form.is_valid(): 
         form.save() 
         return redirect(reverse("repository:detailRepository",args=(id)))
@@ -50,34 +58,42 @@ def update_project(request, id, project_id):
 
 def delete_project(request, id, project_id): 
     context ={} 
-    obj = get_object_or_404(Project, id = project_id)   
+    project = get_project_from_cache(project_id)
+    if not project:
+        return redirect(reverse("repository:detailRepository",args=(id))) 
 
     if request.method =="POST":
-        obj.delete()
+        project.delete()
+        remove_project_from_cache(project_id)
   
     return redirect(reverse("repository:detailRepository",args=(id)))
 
 def add_tasks(request, project_id):
     selectedTasks = request.POST.getlist("tasks")
-    obj = get_object_or_404(Project, id = project_id)
-    repo = Repository.objects.get(id = obj.repository_id)  
+    project = get_project_from_cache(project_id)
+    if not project:
+        return redirect(reverse("project:detailProject",args=[project.id]))
+
+    repo = Repository.objects.get(id = project.repository_id)  
     
     for item in selectedTasks:
         task = Task.objects.get(id = item)
-        task.project.add(obj)
+        task.project.add(project)
         task.save()
-    return redirect(reverse("project:detailProject",args=[obj.id]))
+    return redirect(reverse("project:detailProject",args=[project.id]))
 
 def add_milestones(request, project_id):
     selectedMs = request.POST.getlist("milestones")
-    obj = get_object_or_404(Project, id = project_id)
-    repo = Repository.objects.get(id = obj.repository_id)  
+    project = get_project_from_cache(project_id)
+    if not project:
+        return redirect(reverse("project:detailProject",args=[project.id]))
+    repo = Repository.objects.get(id = project.repository_id)  
     
     for item in selectedMs:
         milestone = Milestone.objects.get(id = item)
-        milestone.project.add(obj)
+        milestone.project.add(project)
         milestone.save()
-    return redirect(reverse("project:detailProject",args=[obj.id]))
+    return redirect(reverse("project:detailProject",args=[project.id]))
 
 def project_detail(request, project_id): 
     context ={} 
@@ -85,7 +101,7 @@ def project_detail(request, project_id):
     newTasks = []
     existingTasks = []
 
-    obj = get_object_or_404(Project, id = project_id)
+    obj = get_project_from_cache(project_id)
     milestones = Milestone.objects.filter(repository_id = obj.repository_id)
     
     existingMs = []
@@ -108,8 +124,29 @@ def project_detail(request, project_id):
 
     context["newTasks"] = newTasks
     context["existingTasks"] = existingTasks
-    context["projectData"] = Project.objects.get(id = project_id)
+    context["projectData"] = get_project_from_cache(project_id)
 
     return render(request, "project/detailProject.html", context)
 
+def get_project_from_cache(project_id):
+    project = cache.get(project_key(project_id))
+    if not project:
+        try:
+            project = Project.objects.get(id=project_id)
+        except:
+            return None
+        cache.set(project_key(project_id), project)
+    return project
 
+def get_projects_from_cache():
+    projects = cache.get(projects_key)
+    if not projects:
+        try:
+            projects = Project.objects.all()
+        except:
+            return None
+        cache.set(projects_key, projects)
+    return projects
+
+def remove_project_from_cache(project_id):
+    cache.delete(project_key(project_id))
