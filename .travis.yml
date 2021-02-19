@@ -1,4 +1,5 @@
 language: python
+sudo: required
 services:
   - postgresql
 python:
@@ -16,12 +17,14 @@ before_install:
 install:
   - pip install -r requirements.txt
 before_script:
-  - docker-compose up --build
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker-compose -f docker-compose.yml up -d --build
   - psql -c "create database Uks;" -U postgres
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
 script:
-  - python github/manage.py test user repository milestone label
+  - docker exec tim6uks_web python manage.py test
+  - docker logout
 after_script:
   - docker-compose down
 branches:
