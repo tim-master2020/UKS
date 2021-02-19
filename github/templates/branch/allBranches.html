@@ -13,16 +13,16 @@
         <div class="card mb-3" >
             <div class="card-body">
                 <p class="lead"><b>{{ b.name }} | {{b.baseBranch}}</b></p>
-                {{ % if b.name != master%}}
+                {% if 'master' not in b.name %}
                 <form action="{% url 'branch:deleteBranch' id b.id %}" method="POST">
                   {% csrf_token %}
                   <input style="background-color: rgb(223, 126, 126);color:white;padding:3px 8px;font-size: 19px; border-radius: 3px;text-decoration: none; float:right; border:none" name="delete" type="submit" value="Delete"/>
                 </form>
-                {{ % endif % }}
-                <button type="button" type="button" style="background-color: rgb(175, 186, 223);color:white;padding:3px 8px;font-size: 19px; border-radius: 3px;text-decoration: none; border:none; float:right; margin-right: 5px;" data-toggle="modal" data-target="#newnewBranchModal">
+                {% endif %}
+                <button type="button" type="button" style="background-color: rgb(175, 186, 223);color:white;padding:3px 8px;font-size: 19px; border-radius: 3px;text-decoration: none; border:none; float:right; margin-right: 5px;" data-toggle="modal" data-target="#newnewBranchModal{{b.id}}">
                   New branch
                 </button>
-                <div class="modal fade" id="newnewBranchModal" tabindex="-1" role="dialog" aria-labelledby="newnewBranchModal">
+                <div class="modal fade" id="newnewBranchModal{{b.id}}" tabindex="-1" role="dialog" aria-labelledby="newnewBranchModal">
                   <form method="post" action="{% url 'branch:createABranchFromExisting' b.id %}">
                       <div class="modal-dialog" role="document">
                           <div class="modal-content">
