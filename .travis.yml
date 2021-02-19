@@ -20,10 +20,7 @@ before_script:
   - docker-compose -f docker-compose.yml up -d --build
 
 script:
-  - psql -c "create database Uks;" -U postgres
-  - psql -c "create user admin with password 'admin';" -U postgres
-  - psql -c "alter role admin superuser;" -U postgres
-  - python github/manage.py test user repository milestone label
+  - python exec app github/manage.py test user repository milestone label
   - docker logout
 
 after_script:
