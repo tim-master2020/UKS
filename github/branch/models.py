@@ -4,7 +4,7 @@ from repository.models import Repository
 
 
 class Branch(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     baseBranch = models.CharField(blank=True, max_length=80)
     repository = models.ForeignKey(to=Repository, on_delete=models.CASCADE)
 
