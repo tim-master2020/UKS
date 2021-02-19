@@ -1,9 +1,6 @@
 language: python
 sudo: required
-services:
-  - postgresql
-python:
-  - "3.9.0"
+
 services:
   - docker
 env:
@@ -14,20 +11,25 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+
 install:
   - pip install -r requirements.txt
+
 before_script:
   - docker login -u tjncc -p Mojdocker.
-  - docker-compose --verbose up --build
+  - docker-compose -f docker-compose.yml up -d --build
   - rm /usr/local/var/postgres/postmaster.pid
   - brew services restart postgresql
   - psql -c "create database Uks;" -U postgres
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
+
 script:
   - python github/manage.py test user repository milestone label
-  - docker-compose down
   - docker logout
+
+after_script:
+  - docker-compose down
 branches:
   only:
   - master
