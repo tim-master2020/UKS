@@ -12,10 +12,41 @@ from .forms import BranchForm
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+
+def branch_key(id):
+    return "branch."+str(id)
+
+def branches_key(repo_id):
+    return "branches.all."+str(repo_id)
+
+def get_branch_from_cache(branch_id):
+    branch = cache.get(branch_key(branch_id))
+    if not branch:
+        try:
+            branch = Branch.objects.get(id=branch_id)
+        except:
+            return None
+        cache.set(branch_key(branch_id), branch)
+    return branch
+
+def remove_branch_from_cache(branch_id):
+    cache.delete(branch_key(branch_id))
+
+def get_branches_from_cache(repo_id):
+    branches = cache.get(branches_key(repo_id))
+    
+    if not branches:
+        branches = Branch.objects.filter(repository_id=repo_id)
+        cache.set(branches_key(repo_id),branches)
+
+    return branches
 
 def allBranches(request):
     repoId = request.path.split("/")[2]
-    allBranches = Branch.objects.filter(repository_id=repoId)
+    allBranches = get_branches_from_cache(repoId)
+    if not allBranches:
+            return redirect(reverse("repository:detailRepository",args=[repoId]))
     context = {'allBranches': allBranches}
     return render(request, "branch/allBranches.html", context)
 
@@ -42,23 +73,28 @@ def addBranch(request, id):
 
 @login_required
 def delete_view(request, branch_id, id): 
-    obj = get_object_or_404(Branch, id = branch_id)   
+    obj = get_object_or_404(Branch, id = branch_id)  
+    branch = get_branch_from_cache(branch_id)
+     
+    if not branch:
+        return redirect(reverse("repository:detailRepository",args=(id))) 
 
     if request.method =="POST":
         obj.delete()
+        remove_branch_from_cache(branch_id)
   
     return redirect(reverse("repository:detailRepository",args=(id)))
 
 @login_required
 def update_view(request, id, branch_id):  
     context ={}
-    obj = get_object_or_404(Branch, id = branch_id) 
-    form = BranchForm(request.POST or None, instance = obj) 
+    branch = get_branch_from_cache(branch_id)
+    if not branch:
+        return redirect(reverse("repository:detailRepository",args=[id]))
+    form = BranchForm(request.POST or None, instance = branch,repo_id=id)
     if form.is_valid(): 
-        form.save() 
-        return redirect(reverse("repository:detailRepository",args=(id)))
-    else:
-        return redirect(reverse("repository:detailRepository",args=(id)))
+        form.save()
+        return redirect(reverse("repository:detailRepository",args=[id]))
 
 @login_required
 def createABranchFromExisting(request, id):
