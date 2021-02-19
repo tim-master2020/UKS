@@ -20,7 +20,7 @@ before_script:
   - docker-compose -f docker-compose.yml up -d --build
 
 script:
-  - python exec app github/manage.py test user repository milestone label
+  - docker exec uks_app_1 python github/manage.py test user repository milestone label
   - docker logout
 
 after_script:
