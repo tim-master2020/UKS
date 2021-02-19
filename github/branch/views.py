@@ -58,7 +58,7 @@ def addBranch(request, id):
         if form.is_valid():
             branch = form.save(commit=False)
             branch.repository_id = id
-            branch.baseBranch = 'master'
+            branch.baseBranch = 'master'+str(branch.repository_id)
             branch.save()
 
             messages.success(request, 'You successfully created a new branch')
@@ -98,8 +98,10 @@ def update_view(request, id, branch_id):
 
 @login_required
 def createABranchFromExisting(request, id):
+    print('base branch id is',id);
     baseBranch = get_object_or_404(Branch, id = id)
     baseBranchName = baseBranch.name
+    print('base branch name is',baseBranchName);
     repo = Repository.objects.get(id = baseBranch.repository_id)
     form = BranchForm(request.POST)
     if form.is_valid(): 

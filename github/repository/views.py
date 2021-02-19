@@ -50,7 +50,7 @@ def addRepository(request):
                     member = User.objects.get(username=item)
                     repo.users.add(member)
             
-            branch = Branch(name="master", repository_id=repo.id)
+            branch = Branch(name="master"+str(repo.id), repository_id=repo.id)
             branch.save()
 
             messages.success(request, 'You successfully created a new repository')
