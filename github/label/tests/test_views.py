@@ -24,8 +24,8 @@ class TestViews(TestCase):
     
     def test_add_new_label_withName(self):
 
-        test_wiki = Wiki.objects.create(content='test content')
-        test_repo = Repository.objects.create(name='testrepo',wiki_id=test_wiki.id)
+        test_wiki = Wiki.objects.create(id=1,content='test content')
+        test_repo = Repository.objects.create(id=1,name='testrepo',wiki_id=test_wiki.id)
         response = self.client.post(reverse('labels:addLabel', args=[test_repo.id]), {
             'name' : 'frontend',
             'color' : '#dcfae4'
@@ -36,8 +36,8 @@ class TestViews(TestCase):
 
     def test_add_new_label_witoutName(self):
 
-        test_wiki = Wiki.objects.create(content='test content')
-        test_repo = Repository.objects.create(name='testrepo',wiki_id=test_wiki.id)
+        test_wiki = Wiki.objects.create(id=1,content='test content')
+        test_repo = Repository.objects.create(id=1,name='testrepo',wiki_id=test_wiki.id)
         response = self.client.post(reverse('labels:addLabel', args=[test_repo.id]))
 
         self.assertEquals(response.status_code, 200)
@@ -45,8 +45,8 @@ class TestViews(TestCase):
 
     def test_add_new_label_wrongColor(self):
 
-        test_wiki = Wiki.objects.create(content='test content')
-        test_repo = Repository.objects.create(name='testrepo',wiki_id=test_wiki.id)
+        test_wiki = Wiki.objects.create(id=1,content='test content')
+        test_repo = Repository.objects.create(id=1,name='testrepo',wiki_id=test_wiki.id)
         response = self.client.post(reverse('labels:addLabel', args=[test_repo.id]),{
             'name' : 'frontend',
             'color' : 'wrong'
@@ -57,8 +57,8 @@ class TestViews(TestCase):
 
 
     def test_delete_existing_label(self):
-        test_wiki = Wiki.objects.create(content='test content')
-        test_repo = Repository.objects.create(name='testrepo',wiki_id=test_wiki.id)
+        test_wiki = Wiki.objects.create(id=1,content='test content')
+        test_repo = Repository.objects.create(id=1,name='testrepo',wiki_id=test_wiki.id)
         
         response = self.client.post(reverse('labels:addLabel', args=[test_repo.id]),{
             'name' : 'frontend',
@@ -75,8 +75,8 @@ class TestViews(TestCase):
         self.assertEquals(Label.objects.count(), 0)
 
     def test_update_label(self):
-        test_wiki = Wiki.objects.create(content='test content')
-        test_repo = Repository.objects.create(name='testrepo',wiki_id=test_wiki.id)
+        test_wiki = Wiki.objects.create(id=1,content='test content')
+        test_repo = Repository.objects.create(id=1,name='testrepo',wiki_id=test_wiki.id)
         
         response = self.client.post(reverse('labels:addLabel', args=[test_repo.id]),{
             'name' : 'frontend',
