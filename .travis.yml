@@ -18,7 +18,8 @@ install:
   - pip install -r requirements.txt
 before_script:
   - docker login -u tjncc -p Mojdocker.
-  - travis_wait 30 docker-compose --verbose up --build
+  - travis_wait 5 pip install scipy
+  - docker-compose --verbose up --build
   - rm /usr/local/var/postgres/postmaster.pid
   - brew services restart postgresql
   - psql -c "create database Uks;" -U postgres
