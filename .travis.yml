@@ -18,8 +18,6 @@ install:
 before_script:
   - docker login -u tjncc -p Mojdocker.
   - docker-compose -f docker-compose.yml up -d --build
-  - rm /usr/local/var/postgres/postmaster.pid
-  - brew services restart postgresql
   - psql -c "create database Uks;" -U postgres
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
