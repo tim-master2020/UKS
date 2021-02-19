@@ -3,14 +3,21 @@ services:
   - postgresql
 python:
   - "3.9.0"
+services:
+  - docker
+env:
+  DOCKER_COMPOSE_VERSION: 1.27.4
 install:
   - pip install -r requirements.txt
 before_script:
+  - psql -c "docker-compose up --build;"
   - psql -c "create database Uks;" -U postgres
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
 script:
   - python github/manage.py test user repository milestone label
+after_script:
+  - docker-compose down
 branches:
   only:
   - master
