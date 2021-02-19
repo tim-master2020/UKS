@@ -10,7 +10,7 @@ env:
 install:
   - pip install -r requirements.txt
 before_script:
-  - docker-compose up --build
+  - docker-compose -f docker-compose.yml up -d --build
   - psql -c "create database Uks;" -U postgres
   - psql -c "create user admin with password 'admin';" -U postgres
   - psql -c "alter role admin superuser;" -U postgres
