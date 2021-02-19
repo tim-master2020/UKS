@@ -16,10 +16,9 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 install:
   - pip install -r requirements.txt
-  - travis_wait 30 mvn install
 before_script:
   - docker login -u tjncc -p Mojdocker.
-  - docker-compose --verbose up --build
+  - travis_wait 30 docker-compose --verbose up --build
   - rm /usr/local/var/postgres/postmaster.pid
   - brew services restart postgresql
   - psql -c "create database Uks;" -U postgres
