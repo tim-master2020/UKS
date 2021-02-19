@@ -36,7 +36,7 @@ def add_commit(request, id):
             commit.user = currentUser
             commit.save()
             messages.success(request, 'You successfully created a new commit')
-            return redirect(reverse("branch:detailBranch",args=(id)))
+            return redirect(reverse("branch:detailBranch",args=[id]))
         else:
             print('Form is not valid!')
 

@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from task.models import Task
 from label.forms import LabelForm
 from photo.models import Photo
+from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
 def allRepositories(request):
@@ -96,11 +97,19 @@ def update_view(request, id):
 def detail_view(request, id): 
     context ={} 
 
-    context["repoData"] = Repository.objects.get(id = id)   
-    context["tasks"] = Task.objects.filter(repo_id = id)
-    context["allProjects"] = Project.objects.filter(repository_id = id).order_by('-name')
-    context["milestones"] = Milestone.objects.filter(repository_id = id).order_by('title')
-    context["allBranches"] = Branch.objects.filter(repository_id=id).order_by('-name')
+    tasks = get_tasks_from_cache(id)
+    projects = get_projects_from_cache(id)
+    milestones = get_milestones_from_cache(id)
+    branches = get_branches_from_cache(id)
+
+    if(tasks is None or projects is None or milestones is None or branches is None):
+        return render(request, "repository/detailRepository.html", context)
+    
+    context["repoData"] = Repository.objects.get(id = id) 
+    context["tasks"] = tasks
+    context["allProjects"] = projects
+    context["milestones"] = milestones
+    context["allBranches"] = branches
     
     context["addLabelForm"] = LabelForm() 
     labels = []
@@ -109,7 +118,7 @@ def detail_view(request, id):
     context['labels'] = labels
 
     tasksAssignes = {}
-    for t in Task.objects.filter(repo_id = id):
+    for t in get_tasks_from_cache(id):
         photos = []
         for a in t.asignees.all():
             photos.append( None if not Photo.objects.filter(users_id = a.id) else Photo.objects.filter(users_id = a.id)[0])
@@ -119,3 +128,64 @@ def detail_view(request, id):
 
 
     return render(request, "repository/detailRepository.html", context)
+
+def tasks_key(repo_id):
+    return "tasks.all."+str(repo_id)
+
+def get_tasks_from_cache(repo_id):
+    tasks = cache.get(tasks_key(repo_id))
+    
+    if not tasks:
+        tasks = Task.objects.filter(repo_id=repo_id)
+        cache.set(tasks_key(repo_id), tasks)
+
+    return tasks
+
+def labels_key(repo_id):
+    return "labels.all."+str(repo_id)
+
+def get_labels_from_cache(repo_id):
+    labels = cache.get(labels_key(repo_id))
+    
+    if not labels:
+        labels = Label.objects.filter(repo_id=repo_id)
+        cache.set(labels_key(repo_id), labels)
+
+    return labels
+
+def projects_key(repo_id):
+    return "projects.all."+str(repo_id)
+
+def get_projects_from_cache(repo_id):
+    projects = cache.get(projects_key(repo_id))
+    
+    if not projects:
+        projects = Project.objects.filter(repo_id=repo_id)
+        cache.set(projects_key(repo_id), projects)
+
+    return projects
+
+def milestones_key(repo_id):
+    return "milestones.all."+str(repo_id)
+
+def get_milestones_from_cache(repo_id):
+    milestones = cache.get(milestones_key(repo_id))
+    
+    if not milestones:
+        milestones = Project.objects.filter(repo_id=repo_id)
+        cache.set(milestones_key(repo_id), milestones)
+
+    return milestones
+
+
+def branches_key(repo_id):
+    return "branches.all."+str(repo_id)
+
+def get_branches_from_cache(repo_id):
+    branches = cache.get(branches_key(repo_id))
+    
+    if not branches:
+        branches = Branch.objects.filter(repo_id=repo_id)
+        cache.set(branches_key(repo_id), branches)
+
+    return branches
